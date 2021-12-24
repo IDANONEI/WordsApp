@@ -29,6 +29,9 @@ class RegistrationManager(ScreenManager):
     def switch_to_registration(self,button):
         self.switch_to(self.RegistrationWindow, direction = 'left')
 
+    def switch_to_forgot_password(self, button):
+        self.switch_to(self.ForgotPasswordWindow, direction='left')
+
     def switch_to_home(self):
         self.switch_to(self.HomeWindow, direction='left')
 
@@ -36,7 +39,7 @@ class RegistrationManager(ScreenManager):
         self.switch_to(self.SingUpWindow, direction = 'right')
 
     def cleen_text(self, instance,value):
-        if instance.text == "Никнэйм":
+        if instance.text == "Логин":
             if value:
                 instance.text = ""
             else:
@@ -53,17 +56,19 @@ class SingUpScreen (Screen):
 
         self.lbl = Label(text="СВЁКЛА", font_size=50)
         self.boxl=BoxLayout(orientation='vertical', size_hint= [.6,0.6], spacing = 30)
-        self.textinputlogin=TextInput(text="Никнэйм", multiline = False)
+        self.textinputlogin=TextInput(text="Логин", multiline = False)
         self.textinputlogin.bind(focus=manager.cleen_text)
         self.textinputpassword = TextInput(text="Пароль", multiline=False)
         self.sing_up=Button(text="Войти",on_press = self.check_user)
         self.registrate=Button(text="Регистрация", on_press = manager.switch_to_registration)
+        self.forgotpassword = Button(text="Забыл(а) логин или пароль", on_press=manager.switch_to_forgot_password)
 
         self.boxl.add_widget(self.lbl)
         self.boxl.add_widget(self.textinputlogin)
         self.boxl.add_widget(self.textinputpassword)
         self.boxl.add_widget(self.sing_up)
         self.boxl.add_widget(self.registrate)
+        self.boxl.add_widget(self.forgotpassword)
 
 
         self.anchLayout=AnchorLayout(anchor_x = 'center', anchor_y = 'center')
@@ -97,7 +102,22 @@ class PopWindow(FloatLayout):
 class ForgotPasswordScreen(Screen):
     def __init__(self, manager,  **kwargs):
         super(ForgotPasswordScreen, self).__init__(**kwargs)
-        # TODO forgot passwond menu
+
+        self.forgot_lbl = Label(text="Забыли пароль?", font_size=25)
+        self.lbl = Label(text="Пожалуйста, введите адрес электронной почты. Вы получите ссылку для изменения пароля", font_size=15)
+        self.mail=TextInput(text="Введите почту", multiline=False)
+        self.btn=Button(text="Восстановить")
+
+        self.boxl=BoxLayout(orientation='vertical', size_hint= [.6,0.6], spacing = 20)
+        self.anchLayout=AnchorLayout(anchor_x = 'center', anchor_y = 'center')
+
+        self.boxl.add_widget(self.forgot_lbl)
+        self.boxl.add_widget(self.lbl)
+        self.boxl.add_widget(self.mail)
+        self.boxl.add_widget(self.btn)
+
+        self.anchLayout.add_widget(self.boxl)
+        self.add_widget(self.anchLayout)
 
 class RegistrationScreen(Screen):
     def __init__(self, manager,  **kwargs):
@@ -106,13 +126,10 @@ class RegistrationScreen(Screen):
 
         super(RegistrationScreen, self).__init__(**kwargs)
         self.lbl = Label(text="Регистрация", font_size=50)
-        self.textinputlogin=TextInput(text="Никнэйм", multiline=False)
-        self.textinputphone = TextInput(text="Номер телефона", multiline=False)
+        self.textinputlogin=TextInput(text="Логин", multiline=False)
+        self.textinputmail = TextInput(text="Почта", multiline=False)
         self.textinputpassword=TextInput(text="Пароль", multiline=False)
         self.textinputpasswordtoo=TextInput(text="Повторите пароль", multiline=False)
-        self.lbl_question = Label(text="Вопрос на восстановление пароля:", font_size=25)
-        self.textinputquestion = TextInput(text="Вопрос", multiline=False)
-        self.textinputanswer = TextInput(text="Ответ", multiline=False)
         self.reg_btn=Button(text="Регистрация",on_press = self.check_reg)
         self.back_btn=Button(text="Назад",on_press = manager.swith_to_singup)
 
@@ -122,12 +139,9 @@ class RegistrationScreen(Screen):
 
         self.boxl.add_widget(self.lbl)
         self.boxl.add_widget(self.textinputlogin)
-        self.boxl.add_widget(self.textinputphone)
+        self.boxl.add_widget(self.textinputmail)
         self.boxl.add_widget(self.textinputpassword)
         self.boxl.add_widget(self.textinputpasswordtoo)
-        self.boxl.add_widget(self.lbl_question)
-        self.boxl.add_widget(self.textinputquestion)
-        self.boxl.add_widget(self.textinputanswer)
 
         self.boxl.add_widget(self.reg_btn)
         self.boxl.add_widget(self.back_btn)
@@ -139,29 +153,23 @@ class RegistrationScreen(Screen):
     def check_reg(self,button):
         st_user = self.textinputlogin.text
         st_user = st_user.lower()
-        st_phone = self.textinputphone.text
-        st_phone = self.man.db.phone(st_phone)
+        st_mail = self.textinputmail.text
 
         if self.textinputpassword.text != self.textinputpasswordtoo.text:
             self.pop = Popup(title="Ошибка", content=PopWindow("Неверный повтор пароля", "Продолжить", self.man),size_hint=(None, None), size=(dp(400), dp(400)))
             self.pop.open()
-        elif self.textinputquestion.text=="Вопрос" or self.textinputanswer.text=="Ответ":
-            self.pop = Popup(title="Ошибка", content=PopWindow("Вопрос и ответ обязательные поля", "Продолжить", self.man),size_hint=(None, None), size=(dp(400), dp(400)))
-            self.pop.open()
-            
-        elif st_phone=="" :
-            self.pop = Popup(title="Ошибка", content=PopWindow("Номер телефона обязательное поле", "Продолжить", self.man),size_hint=(None, None), size=(dp(400), dp(400)))
-            self.pop.open()
-            
 
+        elif self.man.db.check_mail(st_mail):
+            self.pop = Popup(title="Ошибка", content=PopWindow("Пользователь с такой почтой уже существует", "Продолжить", self.man),size_hint=(None, None), size=(dp(400), dp(400)))
+            self.pop.open()
 
-            
-            if self.man.db.check_existing_user(st_user):
-                self.man.db.user_reg(st_user, self.textinputpassword.text,self.textinputphone.text,self.textinputquestion.text,self.textinputanswer.text)
-                self.man.switch_to_home()
-            else:
-                self.pop = Popup(title="Ошибка", content=PopWindow("Такое никнэйм занят", "Продолжить", self.man),size_hint=(None, None), size=(dp(400), dp(400)))
-                self.pop.open()
+        elif self.man.db.check_existing_user(st_user):
+            self.man.db.user_reg(st_user, self.textinputpassword.text,self.textinputmail.text)
+            self.man.switch_to_home()
+
+        else:
+            self.pop = Popup(title="Ошибка", content=PopWindow("Такой логин занят", "Продолжить", self.man),size_hint=(None, None), size=(dp(400), dp(400)))
+            self.pop.open()
 
 
 class HomeScreen(Screen):

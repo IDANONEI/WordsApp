@@ -38,28 +38,23 @@ class DataBase:
             if str(password) == str(users):
                 return True
         return False
-    def check_existing_user(self,u):
-        users = None
-        users=self.cur.execute("""SELECT UserID FROM UserTable WHERE user_name=?""", (u,)).fetchone()[0]
+
+    def check_existing_user(self, u):
+        users = self.cur.execute("""SELECT UserID FROM UserTable WHERE user_name=?""", (u,)).fetchone()
         if users is None:
             return True
         return False
-    def phone(self,number):
-        i=0
-        while i != len(number):
-            if not number[i].isdigit():
-                number = number[0:i]+number[i+1:]
 
+    def check_mail(self, m):
+        mail = self.cur.execute("""SELECT UserID FROM UserTable WHERE mail=?""", (m,)).fetchone()
+        if mail is None:
+            return False
+        return True
 
-
-
-
-
-
-    def user_reg(self,login,password,number,question,answer):
+    def user_reg(self,login,password,mail):
         users = self.cur.execute("""SELECT user_name FROM UserTable""").fetchall()
         id_new_user = len(users) + 1
-        self.cur.execute("""INSERT INTO UserTable VALUES (?, ?, ?, ?, ?, ?)""", (id_new_user,login,password,number,question,answer))
+        self.cur.execute("""INSERT INTO UserTable VALUES (?, ?, ?, ?)""", (id_new_user,login,password,mail))
         self.bd.commit()
 
 
