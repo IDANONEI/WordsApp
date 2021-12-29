@@ -37,12 +37,19 @@ class DataBase:
         if not users is None:
             if str(password) == str(users):
                 return True
+        else:
+            users = self.cur.execute("""SELECT user_password FROM UserTable WHERE mail=?""", (login,)).fetchone()[0]
+            if not users is None:
+                if str(password) == str(users):
+                    return True
         return False
 
     def check_existing_user(self, u):
         users = self.cur.execute("""SELECT UserID FROM UserTable WHERE user_name=?""", (u,)).fetchone()
         if users is None:
-            return True
+            users = self.cur.execute("""SELECT UserID FROM UserTable WHERE mail=?""", (u,)).fetchone()
+            if users is None:
+                    return True
         return False
 
     def check_mail(self, m):

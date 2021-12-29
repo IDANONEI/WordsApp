@@ -1,4 +1,5 @@
 from kivy.app import App
+from kivy.core.window import Window
 from kivy.metrics import dp
 from kivy.uix.button import Button
 from kivy.uix.label import Label
@@ -8,6 +9,12 @@ from kivy.uix.anchorlayout import AnchorLayout
 from kivy.uix.textinput import TextInput
 from kivy.uix.popup import Popup
 from kivy.uix.floatlayout import FloatLayout
+
+from kivy.uix.screenmanager import Screen
+from kivymd.app import MDApp
+from kivymd.uix.button import MDRectangleFlatButton, MDRoundFlatButton, MDRaisedButton, MDFillRoundFlatButton
+from kivymd.uix.textfield import MDTextFieldRound
+
 
 
 class RegistrationManager(ScreenManager):
@@ -54,24 +61,53 @@ class SingUpScreen (Screen):
 
         self.man = manager
 
-        self.lbl = Label(text="СВЁКЛА", font_size=50)
-        self.boxl=BoxLayout(orientation='vertical', size_hint= [.6,0.6], spacing = 30)
-        self.textinputlogin=TextInput(text="Логин", multiline = False)
-        self.textinputlogin.bind(focus=manager.cleen_text)
-        self.textinputpassword = TextInput(text="Пароль", multiline=False)
-        self.sing_up=Button(text="Войти",on_press = self.check_user)
-        self.registrate=Button(text="Регистрация", on_press = manager.switch_to_registration)
-        self.forgotpassword = Button(text="Забыл(а) логин или пароль", on_press=manager.switch_to_forgot_password)
+        self.lbl = Label(text="СВЁКЛА", font_size=50 , color=(147/255, 7/255, 200/255))
+        self.lbl2 = Label(text="Вход", font_size=25,color=(147/255, 7/255, 200/255))
+
+        # self.textinputlogin=TextInput(text="Логин", multiline = False)
+
+        self.textinputlogin = MDTextFieldRound(
+            hint_text="Логин или почта",
+            icon_left="email",
+
+            color_active=(1, 1, 1, 1),
+            # pos_hint = {'center_x':0.5, 'center_y':0.55},
+            normal_color=(120/255, 0, 120/255),
+            line_color=(1/255, 1/255, 1/255, 1),
+            # size_hint = (0.5,0.05),
+        )
+
+
+        # self.textinputlogin.bind(focus=manager.cleen_text)
+
+        self.textinputpassword =MDTextFieldRound(
+            hint_text="Введите пароль",
+            icon_left="key-variant",
+            color_active=(1, 1, 1, 1),
+            # pos_hint={'center_x': 0.5, 'center_y': 0.45},
+            normal_color=(120/255, 0, 120/255),
+            line_color=(1, 0, 1, 1),
+            # size_hint=(0.5, 0.05),
+        )
+
+        # self.textinputpassword = TextInput(text="Пароль", multiline=False)
+        self.sing_up=MDFillRoundFlatButton(text='Авторизоваться',text_color=(1, 1, 1, 1), md_bg_color=(120/255, 0, 120/255), pos_hint={'center_x': 0.5},on_press = self.check_user)
+
+        self.registrate=MDFillRoundFlatButton(text='Регистрация',text_color=(1, 1,1, 1), md_bg_color=(120/255, 0, 120/255), pos_hint={'center_x': 0.5}, on_press = manager.switch_to_registration)
+        self.forgotpassword = MDFillRoundFlatButton(text='Забыл(а) логин или пароль',text_color=(1, 1, 1, 1), md_bg_color=(120/255, 0, 120/255), pos_hint={'center_x': 0.5}, on_press=manager.switch_to_forgot_password)
+
+        self.boxl = BoxLayout(orientation='vertical', size_hint=[.6, 0.6], spacing=20)
+        self.anchLayout = AnchorLayout(anchor_x='center', anchor_y='center')
 
         self.boxl.add_widget(self.lbl)
+        self.boxl.add_widget(self.lbl2)
+
         self.boxl.add_widget(self.textinputlogin)
         self.boxl.add_widget(self.textinputpassword)
+
         self.boxl.add_widget(self.sing_up)
         self.boxl.add_widget(self.registrate)
         self.boxl.add_widget(self.forgotpassword)
-
-
-        self.anchLayout=AnchorLayout(anchor_x = 'center', anchor_y = 'center')
 
         self.anchLayout.add_widget(self.boxl)
         self.add_widget(self.anchLayout)
@@ -79,7 +115,11 @@ class SingUpScreen (Screen):
     def check_user(self, button):
         st = self.textinputlogin.text
         st = st.lower()
-        if self.man.db.check_user(st, self.textinputpassword.text):
+        if self.man.db.check_existing_user(st):
+            self.pop = Popup(title="Ошибка", content=PopWindow("Неверный логин или пароль", "Продолжить", self.man),size_hint=(None, None), size=(dp(400), dp(400)))
+            self.pop.open()
+
+        elif self.man.db.check_user(st, self.textinputpassword.text):
             self.man.switch_to_home()
         else:
             self.pop = Popup(title = "Ошибка", content = PopWindow("Неверный логин или пароль", "Продолжить",self.man), size_hint = (None, None), size = (dp(400), dp(400)))
@@ -103,18 +143,33 @@ class ForgotPasswordScreen(Screen):
     def __init__(self, manager,  **kwargs):
         super(ForgotPasswordScreen, self).__init__(**kwargs)
 
-        self.forgot_lbl = Label(text="Забыли пароль?", font_size=25)
-        self.lbl = Label(text="Пожалуйста, введите адрес электронной почты. Вы получите ссылку для изменения пароля", font_size=15)
-        self.mail=TextInput(text="Введите почту", multiline=False)
-        self.btn=Button(text="Восстановить")
+        self.forgot_lbl = Label(text="Забыли пароль?", font_size=30,color=(147/255, 7/255, 200/255))
+        self.lbl1 = Label(text="Пожалуйста, введите адрес электронной почты.", font_size=20,color=(120/255, 0, 120/255))
+        self.lbl2 = Label(text="Вы получите код для изменения пароля", font_size=20,color=(120/255, 0, 120/255))
+
+
+        self.mail= MDTextFieldRound(
+            hint_text="Введите почту",
+            icon_left="email",
+            color_active=(1, 1, 1, 1),
+            # pos_hint={'center_x': 0.5, 'center_y': 0.45},
+            normal_color=(120/255, 0, 120/255),
+            line_color=(1, 0, 1, 1),
+            # size_hint=(0.5, 0.05),
+        )
+
+        self.btn=MDFillRoundFlatButton(text='Восстановить',text_color=(1, 1, 1, 1), md_bg_color=(120/255, 0, 120/255), pos_hint={'center_x': 0.5})
+        self.back_btn = MDFillRoundFlatButton(text='Назад',text_color=(1, 1, 1, 1), md_bg_color=(120/255, 0, 120/255), pos_hint={'center_x': 0.5}, on_press=manager.swith_to_singup)
 
         self.boxl=BoxLayout(orientation='vertical', size_hint= [.6,0.6], spacing = 20)
         self.anchLayout=AnchorLayout(anchor_x = 'center', anchor_y = 'center')
 
         self.boxl.add_widget(self.forgot_lbl)
-        self.boxl.add_widget(self.lbl)
+        self.boxl.add_widget(self.lbl1)
+        self.boxl.add_widget(self.lbl2)
         self.boxl.add_widget(self.mail)
         self.boxl.add_widget(self.btn)
+        self.boxl.add_widget(self.back_btn)
 
         self.anchLayout.add_widget(self.boxl)
         self.add_widget(self.anchLayout)
@@ -122,17 +177,54 @@ class ForgotPasswordScreen(Screen):
 class RegistrationScreen(Screen):
     def __init__(self, manager,  **kwargs):
 
+
         self.man = manager
 
         super(RegistrationScreen, self).__init__(**kwargs)
-        self.lbl = Label(text="Регистрация", font_size=50)
-        self.textinputlogin=TextInput(text="Логин", multiline=False)
-        self.textinputmail = TextInput(text="Почта", multiline=False)
-        self.textinputpassword=TextInput(text="Пароль", multiline=False)
-        self.textinputpasswordtoo=TextInput(text="Повторите пароль", multiline=False)
-        self.reg_btn=Button(text="Регистрация",on_press = self.check_reg)
-        self.back_btn=Button(text="Назад",on_press = manager.swith_to_singup)
+        self.lbl = Label(text="Регистрация", font_size=50,color=(147/255, 7/255, 200/255))
 
+        self.textinputlogin=MDTextFieldRound(
+            hint_text="Введите логин",
+            icon_left="account-box",
+            color_active=(1, 1, 1, 1),
+            # pos_hint={'center_x': 0.5, 'center_y': 0.45},
+            normal_color=(120/255, 0, 120/255),
+            line_color=(1, 0, 1, 1),
+            # size_hint=(0.5, 0.05),
+        )
+
+        self.textinputmail = MDTextFieldRound(
+            hint_text="Введите почту",
+            icon_left="email",
+            color_active=(1, 1, 1, 1),
+            # pos_hint={'center_x': 0.5, 'center_y': 0.45},
+            normal_color=(120/255, 0, 120/255),
+            line_color=(1, 0, 1, 1),
+            # size_hint=(0.5, 0.05),
+        )
+
+        self.textinputpassword=MDTextFieldRound(
+            hint_text="Придумайте пароль",
+            icon_left="key-variant",
+            color_active=(1, 1, 1, 1),
+            # pos_hint={'center_x': 0.5, 'center_y': 0.45},
+            normal_color=(120/255, 0, 120/255),
+            line_color=(1, 0, 1, 1),
+            # size_hint=(0.5, 0.05),
+        )
+
+        self.textinputpasswordtoo=MDTextFieldRound(
+            hint_text="Повторите пароль",
+            icon_left="key-variant",
+            color_active=(1, 1, 1, 1),
+            # pos_hint={'center_x': 0.5, 'center_y': 0.45},
+            normal_color=(120/255, 0, 120/255),
+            line_color=(1, 0, 1, 1),
+            # size_hint=(0.5, 0.05),
+        )
+
+        self.reg_btn=MDFillRoundFlatButton(text='Регистрация',text_color=(1, 1, 1, 1), md_bg_color=(120/255, 0, 120/255), pos_hint={'center_x': 0.5},on_press = self.check_reg)
+        self.back_btn=MDFillRoundFlatButton(text='Назад',text_color=(1, 1, 1, 1), md_bg_color=(120/255, 0, 120/255), pos_hint={'center_x': 0.5},on_press = manager.swith_to_singup)
 
         self.boxl=BoxLayout(orientation='vertical', size_hint= [.6,0.6], spacing = 10)
         self.anchLayout=AnchorLayout(anchor_x = 'center', anchor_y = 'center')
@@ -142,10 +234,8 @@ class RegistrationScreen(Screen):
         self.boxl.add_widget(self.textinputmail)
         self.boxl.add_widget(self.textinputpassword)
         self.boxl.add_widget(self.textinputpasswordtoo)
-
         self.boxl.add_widget(self.reg_btn)
         self.boxl.add_widget(self.back_btn)
-
 
         self.anchLayout.add_widget(self.boxl)
         self.add_widget(self.anchLayout)
@@ -155,8 +245,16 @@ class RegistrationScreen(Screen):
         st_user = st_user.lower()
         st_mail = self.textinputmail.text
 
-        if self.textinputpassword.text != self.textinputpasswordtoo.text:
+        if self.textinputpassword.text != self.textinputpasswordtoo.text or self.textinputpassword.text =="" :
             self.pop = Popup(title="Ошибка", content=PopWindow("Неверный повтор пароля", "Продолжить", self.man),size_hint=(None, None), size=(dp(400), dp(400)))
+            self.pop.open()
+
+        elif self.textinputlogin.text =="":
+            self.pop = Popup(title="Ошибка",content=PopWindow("Логин обязательное поле", "Продолжить", self.man),size_hint=(None, None), size=(dp(400), dp(400)))
+            self.pop.open()
+
+        elif self.textinputmail.text =="":
+            self.pop = Popup(title="Ошибка",content=PopWindow("Почта обязательное поле", "Продолжить", self.man),size_hint=(None, None), size=(dp(400), dp(400)))
             self.pop.open()
 
         elif self.man.db.check_mail(st_mail):
@@ -178,13 +276,13 @@ class HomeScreen(Screen):
         self.boxl = BoxLayout(orientation='vertical', size_hint=[.6, 0.6], spacing=30)
         self.anchLayout = AnchorLayout(anchor_x='center', anchor_y='center')
 
-        self.lbl = Label(text = "СВЁКЛА", font_size = 50)
+        self.lbl = Label(text = "СВЁКЛА", font_size = 50,color=(147/255, 7/255, 200/255))
 
-        self.training_btn = Button(text = "Тренировка", font_size = 20)
-        self.my_dict_btn = Button(text = "Мой словарь", font_size = 20)
-        self.statistics_btn = Button(text="Статистика", font_size=20)
-        self.theory_btn = Button(text="Теория", font_size=20)
-        self.rating_btn = Button(text="Рэйтинг", font_size=20)
+        self.training_btn = MDFillRoundFlatButton(text='Треннировка',text_color=(1, 1, 1, 1), md_bg_color=(120/255, 0, 120/255), pos_hint={'center_x': 0.5})
+        self.my_dict_btn = MDFillRoundFlatButton(text='Мой словарь',text_color=(1, 1, 1, 1), md_bg_color=(120/255, 0, 120/255), pos_hint={'center_x': 0.5})
+        self.statistics_btn = MDFillRoundFlatButton(text='Статистика',text_color=(1, 1, 1, 1), md_bg_color=(120/255, 0, 120/255), pos_hint={'center_x': 0.5})
+        self.theory_btn = MDFillRoundFlatButton(text='Теория ',text_color=(1, 1, 1, 1), md_bg_color=(120/255, 0, 120/255), pos_hint={'center_x': 0.5})
+        self.rating_btn = MDFillRoundFlatButton(text='Рэйтинг',text_color=(1, 1, 1, 1), md_bg_color=(120/255, 0, 120/255), pos_hint={'center_x': 0.5})
 
         self.boxl.add_widget(self.lbl)
         self.boxl.add_widget(self.training_btn)
@@ -197,12 +295,12 @@ class HomeScreen(Screen):
         self.add_widget(self.anchLayout)
 
 
-
-
-class RegistrationApp(App):
+class RegistrationApp(MDApp):
     def __init__(self, db, **kwargs):
         super().__init__(**kwargs)
         self.db = db
+        self.theme_cls.theme_style = "Dark"
+
 
     def build(self):
         reg_man = RegistrationManager(self.db)
