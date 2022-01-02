@@ -32,16 +32,19 @@ class DataBase:
             self.cur.execute("""UPDATE WordsTable SET false_read=? WHERE words=?""", (false_read_bd+1, word,))
             self.bd.commit()
     def check_user(self,login,password):
-        users = None
-        users = self.cur.execute("""SELECT user_password FROM UserTable WHERE user_name=?""", (login,)).fetchone()[0]
+        users = self.cur.execute("""SELECT UserID FROM UserTable WHERE user_name=?""", (login,)).fetchone()
         if not users is None:
-            if str(password) == str(users):
-                return True
-        else:
-            users = self.cur.execute("""SELECT user_password FROM UserTable WHERE mail=?""", (login,)).fetchone()[0]
+            users = self.cur.execute("""SELECT user_password FROM UserTable WHERE user_name=?""", (login,)).fetchone()[0]
             if not users is None:
                 if str(password) == str(users):
                     return True
+        else:
+            mail = self.cur.execute("""SELECT UserID FROM UserTable WHERE mail=?""", (login,)).fetchone()
+            if not mail is None:
+                users = self.cur.execute("""SELECT user_password FROM UserTable WHERE mail=?""", (login,)).fetchone()[0]
+                if not users is None:
+                    if str(password) == str(users):
+                        return True
         return False
 
     def check_existing_user(self, u):
@@ -64,14 +67,4 @@ class DataBase:
         self.cur.execute("""INSERT INTO UserTable VALUES (?, ?, ?, ?)""", (id_new_user,login,password,mail))
         self.bd.commit()
 
-
-
-
 new_db = DataBase()
-# word = new_db.choose_words()[0]
-# print(word)
-# new_db.update_read(word, True)
-# new_db.user_reg('Рафаил',123)
-# new_db.user_reg('Даниил',123321)
-
-
