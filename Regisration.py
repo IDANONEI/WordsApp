@@ -16,54 +16,12 @@ from kivymd.uix.button import MDRectangleFlatButton, MDRoundFlatButton, MDRaised
 from kivymd.uix.label import MDLabel
 from kivymd.uix.textfield import MDTextFieldRound
 
-from Account import *
-
-
-
-class RegistrationManager(ScreenManager):
-    def __init__(self, db, **kwargs):
-        super(RegistrationManager, self).__init__(**kwargs)
-
-        self.db = db
-
-        self.SingUpWindow=SingUpScreen(self, name="SingUp")
-        self.ForgotPasswordWindow=ForgotPasswordScreen(self, name="ForgotPassword")
-        self.RegistrationWindow=RegistrationScreen(self, name="Registration")
-        # self.HomeWindow=HomeScreen(AccountManager(self.db), name="Home")
-        # self.accountManager = AccountManager(self.db)
-
-        self.add_widget(self.SingUpWindow)
-        self.add_widget(self.ForgotPasswordWindow)
-        self.add_widget(self.RegistrationWindow)
-        # self.add_widget(self.HomeWindow)
-
-    def switch_to_registration(self,button):
-        self.switch_to(self.RegistrationWindow, direction = 'left')
-
-    def switch_to_forgot_password(self, button):
-        self.switch_to(self.ForgotPasswordWindow, direction='left')
-
-    def switch_to_home(self):
-        # self.current = self.accountManager.switch_to_home()
-        # self.switch_to(self.HomeWindow, direction='left')
-        AccountApp(self.db).run()
-
-    def swith_to_singup(self, button):
-        self.switch_to(self.SingUpWindow, direction = 'right')
-
-    def cleen_text(self, instance,value):
-        if instance.text == "Логин":
-            if value:
-                instance.text = ""
-            else:
-                instance.foreground_color = (192/255, 192/255, 192/255, 1)
-    def change_icon_color(self,instance,value):
-        if value:
-            instance.icon_left_color=(147 / 255, 7 / 255, 200 / 255)
-        else:
-            instance.icon_left_color = (1, 1, 1, 1)
-
-
+def change_current_info(info):
+    with open("Email_login_password.txt","w",encoding='utf-8') as f:
+        f.write(str(info[0]) + "\n")
+        f.write(str(info[1]) + "\n")
+        f.write(str(info[2]) + "\n")
+        f.write(str(info[3]) + "\n")
 
 
 class SingUpScreen (Screen):
@@ -168,7 +126,8 @@ class SingUpScreen (Screen):
             self.pop.open()
 
         elif self.man.db.check_user(st, self.textinputpassword.text):
-            self.man.switch_to_home()
+            change_current_info(self.man.db.user_info_l_or_e(self.textinputlogin.text))
+            self.man.switch_to_home_left()
         else:
             self.pop = Popup(
                 title = "Ошибка",
@@ -177,7 +136,7 @@ class SingUpScreen (Screen):
                 title_color = (147 / 255, 7 / 255, 200 / 255),
                 size_hint = (0.5, 0.5),
             )
-
+            self.pop.content.btn.bind(on_press = self.pop.dismiss)
             self.pop.open()
 
 
@@ -272,7 +231,6 @@ class ForgotPasswordScreen(Screen):
 class RegistrationScreen(Screen):
     def __init__(self, manager,  **kwargs):
 
-
         self.man = manager
 
         super(RegistrationScreen, self).__init__(**kwargs)
@@ -366,36 +324,30 @@ class RegistrationScreen(Screen):
 
         if self.textinputpassword.text != self.textinputpasswordtoo.text or self.textinputpassword.text =="" :
             self.pop = Popup(title="Ошибка", content=PopWindow("Неверный повтор пароля", "Продолжить", self.man),size_hint=(None, None), size=(dp(400), dp(400)))
+            self.pop.content.btn.bind(on_press = self.pop.dismiss)
             self.pop.open()
 
         elif self.textinputlogin.text =="":
             self.pop = Popup(title="Ошибка",content=PopWindow("Логин обязательное поле", "Продолжить", self.man),size_hint=(None, None), size=(dp(400), dp(400)))
+            self.pop.content.btn.bind(on_press = self.pop.dismiss)
             self.pop.open()
 
         elif self.textinputmail.text =="":
             self.pop = Popup(title="Ошибка",content=PopWindow("Почта обязательное поле", "Продолжить", self.man),size_hint=(None, None), size=(dp(400), dp(400)))
+            self.pop.content.btn.bind(on_press = self.pop.dismiss)
             self.pop.open()
 
         elif self.man.db.check_mail(st_mail):
             self.pop = Popup(title="Ошибка", content=PopWindow("Пользователь с такой почтой уже существует", "Продолжить", self.man),size_hint=(None, None), size=(dp(400), dp(400)))
+            self.pop.content.btn.bind(on_press = self.pop.dismiss)
             self.pop.open()
 
         elif self.man.db.check_existing_user(st_user):
             self.man.db.user_reg(st_user, self.textinputpassword.text,self.textinputmail.text)
-            self.man.switch_to_home()
+            change_current_info(self.man.db.user_info_l_or_e(self.textinputlogin.text))
+            self.man.switch_to_home_left()
 
         else:
             self.pop = Popup(title="Ошибка", content=PopWindow("Такой логин занят", "Продолжить", self.man),size_hint=(None, None), size=(dp(400), dp(400)))
+            self.pop.content.btn.bind(on_press=self.pop.dismiss)
             self.pop.open()
-
-class RegistrationApp(MDApp):
-    def __init__(self, db, **kwargs):
-        super().__init__(**kwargs)
-        self.db = db
-        self.theme_cls.theme_style = "Dark"
-
-
-    def build(self):
-        reg_man = RegistrationManager(self.db)
-
-        return reg_man

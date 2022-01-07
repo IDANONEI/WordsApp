@@ -15,6 +15,7 @@ class DataBase:
             line = line.strip()
             self.cur.execute("""INSERT INTO WordsTable VALUES (?, ?, ?, ?)""", (i+1, line, 0, 0))
             self.bd.commit()
+
     def choose_words(self):
         list_words=self.cur.execute("""SELECT words FROM WordsTable""").fetchall()
         list_words_update = []
@@ -66,5 +67,22 @@ class DataBase:
         id_new_user = len(users) + 1
         self.cur.execute("""INSERT INTO UserTable VALUES (?, ?, ?, ?)""", (id_new_user,login,password,mail))
         self.bd.commit()
+
+    def user_info_id(self, id):
+        user = self.cur.execute("""SELECT * FROM UserTable WHERE UserID=?""", (id,)).fetchone()
+        if not user is None:
+           return user
+        else:
+            raise Exception("Пользователь не существует")
+
+    def user_info_l_or_e(self, login):
+        user = self.cur.execute("""SELECT * FROM UserTable WHERE user_name=?""", (login,)).fetchone()
+        if not user is None:
+           return user
+        else:
+            user = self.cur.execute("""SELECT * FROM UserTable WHERE mail=?""", (login,)).fetchone()
+            return user
+
+
 
 new_db = DataBase()
