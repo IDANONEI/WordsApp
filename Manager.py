@@ -36,7 +36,8 @@ class AppManager(ScreenManager):
         self.StatisticWindow = StatisticScreen(self, name="Statistic")
         self.TheoryWindow = TheoryScreen(self, name="Theory")
         self.RatingWindow = RatingScreen(self, name="Rating")
-
+        self.PracticeWindow = PracticeScreen(self, name="Practice")
+        self.TestWindow = TestScreen(self, name="Test")
 
         if not is_authorized:
             self.add_widget(self.SingUpWindow)
@@ -49,6 +50,8 @@ class AppManager(ScreenManager):
             self.add_widget(self.StatisticWindow)
             self.add_widget(self.TheoryWindow)
             self.add_widget(self.RatingWindow)
+            self.add_widget(self.PracticeWindow)
+            self.add_widget(self.TestWindow)
 
         else:
             self.add_widget(self.HomeWindow)
@@ -57,11 +60,12 @@ class AppManager(ScreenManager):
             self.add_widget(self.StatisticWindow)
             self.add_widget(self.TheoryWindow)
             self.add_widget(self.RatingWindow)
+            self.add_widget(self.PracticeWindow)
+            self.add_widget(self.TestWindow)
 
             self.add_widget(self.SingUpWindow)
             self.add_widget(self.ForgotPasswordWindow)
             self.add_widget(self.RegistrationWindow)
-
 
     def switch_to_registration(self, button):
         self.switch_to(self.RegistrationWindow, direction='left')
@@ -72,26 +76,30 @@ class AppManager(ScreenManager):
     def swith_to_singup(self, button):
         self.switch_to(self.SingUpWindow, direction='right')
 
-    def switch_to_home_left(self):
+    def switch_to_home_left(self, button = None):
         self.switch_to(self.HomeWindow, direction='left')
 
-    def switch_to_home_right(self):
-        self.switch_to(self.HomeWindow , direction='right')
+    def switch_to_home_right(self, button=None):
+        self.switch_to(self.HomeWindow, direction='right')
 
-    def switch_to_training (self, button):
+    def switch_to_training(self, button):
         self.switch_to(self.TrainingWindow, direction='left')
 
-    def switch_to_dictionary (self, button):
+    def switch_to_dictionary(self, button):
         self.switch_to(self.My_dictionaryWindow, direction='left')
 
-    def switch_to_statistic (self, button):
+    def switch_to_statistic(self, button):
         self.switch_to(self.StatisticWindow, direction='left')
 
     def switch_to_theory(self, button):
         self.switch_to(self.TheoryWindow, direction='left')
 
-    def switch_to_rating (self, button):
-        self.switch_to(self.RatingWindow, direction='left')
+    def switch_to_practice(self, button):
+        self.switch_to(self.PracticeWindow, direction='left')
+
+    def switch_to_test(self, button):
+        self.switch_to(self.TestWindow, direction='left')
+
 
     def cleen_text(self, instance, value):
         if instance.text == "Логин":
@@ -113,7 +121,6 @@ class ManagerApp(MDApp):
         self.db = db
         self.is_authorized = is_authorized
         self.theme_cls.theme_style = "Dark"
-
 
     def build(self):
         reg_man = AppManager(self.db, self.is_authorized)

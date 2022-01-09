@@ -252,7 +252,7 @@ class RegistrationScreen(Screen):
             pos_hint={'center_x': 0.5, 'center_y': 0.7},
             normal_color=(120/255, 0, 120/255),
             line_color=(1, 0, 1, 1),
-            size_hint=(0.4, 0.05),
+            size_hint=(0.5, 0.07),
         )
 
         self.textinputlogin.bind(focus=manager.change_icon_color)
@@ -261,10 +261,10 @@ class RegistrationScreen(Screen):
             hint_text="Введите почту",
             icon_left="email",
             color_active=(1, 1, 1, 1),
-            pos_hint={'center_x': 0.5, 'center_y': 0.6},
+            pos_hint={'center_x': 0.5, 'center_y': 0.58},
             normal_color=(120/255, 0, 120/255),
             line_color=(1, 0, 1, 1),
-            size_hint=(0.4, 0.05),
+            size_hint=(0.5, 0.07),
         )
 
         self.textinputmail.bind(focus=manager.change_icon_color)
@@ -273,10 +273,10 @@ class RegistrationScreen(Screen):
             hint_text="Придумайте пароль",
             icon_left="key-variant",
             color_active=(1, 1, 1, 1),
-            pos_hint={'center_x': 0.5, 'center_y': 0.5},
+            pos_hint={'center_x': 0.5, 'center_y': 0.46},
             normal_color=(120/255, 0, 120/255),
             line_color=(1, 0, 1, 1),
-            size_hint=(0.4, 0.05),
+            size_hint=(0.5, 0.07),
         )
         self.textinputpassword.bind(focus=manager.change_icon_color)
 
@@ -284,10 +284,10 @@ class RegistrationScreen(Screen):
             hint_text="Повторите пароль",
             icon_left="key-variant",
             color_active=(1, 1, 1, 1),
-            pos_hint={'center_x': 0.5, 'center_y': 0.4},
+            pos_hint={'center_x': 0.5, 'center_y': 0.34},
             normal_color=(120/255, 0, 120/255),
             line_color=(1, 0, 1, 1),
-            size_hint=(0.4, 0.05),
+            size_hint=(0.5, 0.07),
         )
         self.textinputpasswordtoo.bind(focus=manager.change_icon_color)
 
@@ -296,16 +296,16 @@ class RegistrationScreen(Screen):
             text='Регистрация',
             text_color=(1, 1, 1, 1),
             md_bg_color=(120/255, 0, 120/255),
-            pos_hint={'center_x': 0.5, 'center_y': 0.28},
+            pos_hint={'center_x': 0.5, 'center_y': 0.22},
             on_press = self.check_reg,
-            size_hint=(0.44, 0.05)
+            size_hint=(0.5, 0.07)
         )
         self.back_btn=MDFillRoundFlatButton(
             text='Назад',text_color=(1, 1, 1, 1),
             md_bg_color=(120/255, 0, 120/255),
-            pos_hint={'center_x': 0.5, 'center_y': 0.18},
+            pos_hint={'center_x': 0.5, 'center_y': 0.12},
             on_press = manager.swith_to_singup,
-            size_hint=(0.44, 0.05)
+            size_hint=(0.5, 0.07)
         )
 
         self.add_widget(self.lbl)

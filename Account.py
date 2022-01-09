@@ -2,6 +2,7 @@ from kivy.app import App
 from kivy.core.window import Window
 from kivy.metrics import dp
 from kivy.uix.button import Button
+from kivy.uix.gridlayout import GridLayout
 from kivy.uix.label import Label
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.uix.boxlayout import BoxLayout
@@ -12,8 +13,9 @@ from kivy.uix.floatlayout import FloatLayout
 
 from kivy.uix.screenmanager import Screen
 from kivymd.app import MDApp
-from kivymd.uix.button import MDRectangleFlatButton, MDRoundFlatButton, MDRaisedButton, MDFillRoundFlatButton
-from kivymd.uix.label import MDLabel
+from kivymd.uix.button import MDRectangleFlatButton, MDRoundFlatButton, MDRaisedButton, MDFillRoundFlatButton, MDIconButton, MDFloatingActionButton
+from kivymd.uix.gridlayout import MDGridLayout
+from kivymd.uix.label import MDLabel, MDIcon
 from kivymd.uix.textfield import MDTextFieldRound
 
 class HomeScreen(Screen):
@@ -37,56 +39,111 @@ class HomeScreen(Screen):
             md_bg_color=(120 / 255, 0, 120 / 255),
             pos_hint={'center_x': 0.5, 'center_y': 0.7},
             on_press=self.man.switch_to_training,
-            size_hint=(0.44, 0.05)
+            size_hint=(0.5, 0.07)
         )
 
-        self.my_dict_btn = MDFillRoundFlatButton(
-            text='Мой словарь',
-            text_color=(1, 1, 1, 1),
-            md_bg_color=(120 / 255, 0, 120 / 255),
-            pos_hint={'center_x': 0.5, 'center_y': 0.6},
-            on_press=self.man.switch_to_dictionary ,
-            size_hint=(0.44, 0.05)
-        )
+
 
         self.statistics_btn = MDFillRoundFlatButton(
             text='Статистика',
             text_color=(1, 1, 1, 1),
             md_bg_color=(120 / 255, 0, 120 / 255),
-            pos_hint={'center_x': 0.5, 'center_y': 0.5},
+            pos_hint={'center_x': 0.5, 'center_y': 0.58},
             # on_press=
-            size_hint=(0.44, 0.05)
-        )
-
-        self.theory_btn = MDFillRoundFlatButton(
-            text='Теория',
-            text_color=(1, 1, 1, 1),
-            md_bg_color=(120 / 255, 0, 120 / 255),
-            pos_hint={'center_x': 0.5, 'center_y': 0.4},
-            # on_press=
-            size_hint=(0.44, 0.05)
+            size_hint=(0.5, 0.07)
         )
 
         self.rating_btn = MDFillRoundFlatButton(
             text='Рэйтинг',
             text_color=(1, 1, 1, 1),
             md_bg_color=(120 / 255, 0, 120 / 255),
-            pos_hint={'center_x': 0.5, 'center_y': 0.3},
+            pos_hint={'center_x': 0.5, 'center_y': 0.46},
             # on_press=
-            size_hint=(0.44, 0.05)
+            size_hint=(0.5, 0.07)
         )
+
+        self.my_dict_btn = MDFillRoundFlatButton(
+            text='О приложении',
+            text_color=(1, 1, 1, 1),
+            md_bg_color=(120 / 255, 0, 120 / 255),
+            pos_hint={'center_x': 0.5, 'center_y': 0.34},
+            on_press=self.man.switch_to_dictionary,
+            size_hint=(0.5, 0.07)
+        )
+
+        self.settings_button = MDIconButton(
+            icon = "cog-outline",
+            theme_text_color="Custom",
+            text_color=(120 / 255, 0, 120 / 255, 1),
+            pos_hint = {'center_x': 0.9, 'center_y': 0.9},
+            user_font_size = "40sp",
+        )
+
 
         self.add_widget(self.lbl)
         self.add_widget(self.training_btn)
-        self.add_widget(self.my_dict_btn)
         self.add_widget(self.statistics_btn)
-        self.add_widget(self.theory_btn)
         self.add_widget(self.rating_btn)
+        self.add_widget(self.settings_button)
 
 
 class TrainingScreen(Screen):
+
     def __init__(self, manager, **kwargs):
         super().__init__(**kwargs)
+
+        self.lbl = MDLabel(
+            text="Тренировка",
+            font_style="H3",
+            halign="center",
+            pos_hint={'center_x': 0.5, 'center_y': 0.85},
+            theme_text_color="Custom",
+            text_color=(147 / 255, 7 / 255, 200 / 255)
+        )
+
+
+        self.theory_btn = MDFillRoundFlatButton(
+            text='Теория',
+            text_color=(1, 1, 1, 1),
+            md_bg_color=(120 / 255, 0, 120 / 255),
+            pos_hint={'center_x': 0.5, 'center_y': 0.7},
+            on_press=manager.switch_to_theory,
+            size_hint=(0.5, 0.07)
+        )
+
+        self.practice_btn = MDFillRoundFlatButton(
+            text='Практика',
+            text_color=(1, 1, 1, 1),
+            md_bg_color=(120 / 255, 0, 120 / 255),
+            pos_hint={'center_x': 0.5, 'center_y': 0.6},
+            on_press=manager.switch_to_practice,
+            size_hint=(0.5, 0.07)
+        )
+
+        self.test_btn = MDFillRoundFlatButton(
+            text='Тест',
+            text_color=(1, 1, 1, 1),
+            md_bg_color=(120 / 255, 0, 120 / 255),
+            pos_hint={'center_x': 0.5, 'center_y': 0.5},
+            on_press=manager.switch_to_test,
+            size_hint=(0.5, 0.07)
+        )
+
+        self.move_back_btn = MDFillRoundFlatButton(
+            text='Назад',
+            text_color=(1, 1, 1, 1),
+            md_bg_color=(120 / 255, 0, 120 / 255),
+            pos_hint={'center_x': 0.5, 'center_y': 0.2},
+            on_press=manager.switch_to_home_right,
+            size_hint=(0.5, 0.07)
+        )
+
+        self.add_widget(self.lbl)
+        self.add_widget(self.theory_btn)
+        self.add_widget(self.practice_btn)
+        self.add_widget(self.test_btn)
+        self.add_widget(self.move_back_btn)
+
 
 class My_dictionaryScreen(Screen):
     def __init__(self,manager, **kwargs):
@@ -101,9 +158,64 @@ class StatisticScreen(Screen):
 class TheoryScreen(Screen):
     def __init__(self,manager, **kwargs):
         super().__init__(**kwargs)
-        pass
+
 
 class RatingScreen(Screen):
     def __init__(self,manager, **kwargs):
         super().__init__(**kwargs)
         pass
+
+class PracticeScreen(Screen):
+    def __init__(self,manager, **kwargs):
+        super().__init__(**kwargs)
+        self.count_right_words = 0
+        self.count_wrong_words = 0
+        self.word = "начАвшись".upper()
+
+        # self.finish =
+
+        # self.add_widget(MDIcon(icon = "check-bold", pos_hint={"center_x" : 0.6, 'center_y' : 0.9}))
+        # self.add_widget(MDIcon(icon = "", pos_hint={))
+
+        self.add_widget (MDIconButton(
+            icon="check-bold",
+            theme_text_color="Custom",
+            text_color=(0, 200 / 255,0 , 1),
+            pos_hint={"center_x" : 0.1, 'center_y' : 0.9},
+            user_font_size="40sp",
+        ))
+
+        self.add_widget(MDIconButton(
+            icon="close-thick",
+            theme_text_color="Custom",
+            text_color=(200 / 255,0 ,0 , 1),
+            pos_hint={"center_x" : 0.1, 'center_y' : 0.8},
+            user_font_size="40sp",
+        ))
+
+        self.list_letter_button = []
+        self.gl = MDGridLayout(
+            cols = 6,
+            spacing = 20,
+            pos_hint = {"center_x" : 0.55, "center_y" : 0.25},
+            size_hint = (0.1, 0.1)
+        )
+        for letter in self.word:
+            self.list_letter_button.append(MDFillRoundFlatButton(
+                text = letter,
+                font_size=15
+
+            ))
+            self.gl.add_widget(self.list_letter_button[-1])
+
+        self.add_widget(self.gl)
+
+
+
+
+
+
+class TestScreen(Screen):
+    def __init__(self,manager, **kwargs):
+        super().__init__(**kwargs)
+
