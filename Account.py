@@ -13,10 +13,12 @@ from kivy.uix.floatlayout import FloatLayout
 
 from kivy.uix.screenmanager import Screen
 from kivymd.app import MDApp
-from kivymd.uix.button import MDRectangleFlatButton, MDRoundFlatButton, MDRaisedButton, MDFillRoundFlatButton, MDIconButton, MDFloatingActionButton
+from kivymd.uix.button import MDRectangleFlatButton, MDRoundFlatButton, MDRaisedButton, MDFillRoundFlatButton, \
+    MDIconButton, MDFloatingActionButton
 from kivymd.uix.gridlayout import MDGridLayout
 from kivymd.uix.label import MDLabel, MDIcon
 from kivymd.uix.textfield import MDTextFieldRound
+
 
 class HomeScreen(Screen):
     def __init__(self, manager, **kwargs):
@@ -34,15 +36,13 @@ class HomeScreen(Screen):
         )
 
         self.training_btn = MDFillRoundFlatButton(
-            text='Треннировка',
+            text='Тренировка',
             text_color=(1, 1, 1, 1),
             md_bg_color=(120 / 255, 0, 120 / 255),
             pos_hint={'center_x': 0.5, 'center_y': 0.7},
             on_press=self.man.switch_to_training,
             size_hint=(0.5, 0.07)
         )
-
-
 
         self.statistics_btn = MDFillRoundFlatButton(
             text='Статистика',
@@ -54,7 +54,7 @@ class HomeScreen(Screen):
         )
 
         self.rating_btn = MDFillRoundFlatButton(
-            text='Рэйтинг',
+            text='Рейтинг',
             text_color=(1, 1, 1, 1),
             md_bg_color=(120 / 255, 0, 120 / 255),
             pos_hint={'center_x': 0.5, 'center_y': 0.46},
@@ -62,29 +62,30 @@ class HomeScreen(Screen):
             size_hint=(0.5, 0.07)
         )
 
-        self.my_dict_btn = MDFillRoundFlatButton(
+        self.about_app = MDFillRoundFlatButton(
             text='О приложении',
             text_color=(1, 1, 1, 1),
             md_bg_color=(120 / 255, 0, 120 / 255),
             pos_hint={'center_x': 0.5, 'center_y': 0.34},
-            on_press=self.man.switch_to_dictionary,
+            # on_press=self.man.,
             size_hint=(0.5, 0.07)
         )
 
         self.settings_button = MDIconButton(
-            icon = "cog-outline",
+            icon="cog-outline",
             theme_text_color="Custom",
             text_color=(120 / 255, 0, 120 / 255, 1),
-            pos_hint = {'center_x': 0.9, 'center_y': 0.9},
-            user_font_size = "40sp",
+            pos_hint={'center_x': 0.9, 'center_y': 0.9},
+            user_font_size="40sp",
+            # on_press=self.man.Settings_AppScreen
         )
-
 
         self.add_widget(self.lbl)
         self.add_widget(self.training_btn)
         self.add_widget(self.statistics_btn)
         self.add_widget(self.rating_btn)
         self.add_widget(self.settings_button)
+        self.add_widget(self.about_app)
 
 
 class TrainingScreen(Screen):
@@ -100,7 +101,6 @@ class TrainingScreen(Screen):
             theme_text_color="Custom",
             text_color=(147 / 255, 7 / 255, 200 / 255)
         )
-
 
         self.theory_btn = MDFillRoundFlatButton(
             text='Теория',
@@ -145,77 +145,86 @@ class TrainingScreen(Screen):
         self.add_widget(self.move_back_btn)
 
 
-class My_dictionaryScreen(Screen):
-    def __init__(self,manager, **kwargs):
+class About_AppScreen(Screen):
+    def __init__(self, manager, **kwargs):
+        super().__init__(**kwargs)
+
+
+class Settings_AppScreen(Screen):
+    def __init__(self, manager, **kwargs):
         super().__init__(**kwargs)
 
 
 class StatisticScreen(Screen):
-    def __init__(self,manager, **kwargs):
+    def __init__(self, manager, **kwargs):
         super().__init__(**kwargs)
 
 
 class TheoryScreen(Screen):
-    def __init__(self,manager, **kwargs):
+    def __init__(self, manager, **kwargs):
         super().__init__(**kwargs)
 
 
 class RatingScreen(Screen):
-    def __init__(self,manager, **kwargs):
+    def __init__(self, manager, **kwargs):
         super().__init__(**kwargs)
         pass
 
+
 class PracticeScreen(Screen):
-    def __init__(self,manager, **kwargs):
+    def __init__(self, manager, **kwargs):
         super().__init__(**kwargs)
         self.count_right_words = 0
         self.count_wrong_words = 0
-        self.word = "начАвшись".upper()
+        self.word = "АБВ".upper()
 
-        # self.finish =
-
-        # self.add_widget(MDIcon(icon = "check-bold", pos_hint={"center_x" : 0.6, 'center_y' : 0.9}))
-        # self.add_widget(MDIcon(icon = "", pos_hint={))
-
-        self.add_widget (MDIconButton(
+        self.add_widget(MDIconButton(
             icon="check-bold",
             theme_text_color="Custom",
-            text_color=(0, 200 / 255,0 , 1),
-            pos_hint={"center_x" : 0.1, 'center_y' : 0.9},
+            text_color=(0, 200 / 255, 0, 1),
+            pos_hint={"center_x": 0.1, 'center_y': 0.9},
             user_font_size="40sp",
         ))
 
         self.add_widget(MDIconButton(
             icon="close-thick",
             theme_text_color="Custom",
-            text_color=(200 / 255,0 ,0 , 1),
-            pos_hint={"center_x" : 0.1, 'center_y' : 0.8},
+            text_color=(200 / 255, 0, 0, 1),
+            pos_hint={"center_x": 0.1, 'center_y': 0.8},
             user_font_size="40sp",
         ))
 
-        self.list_letter_button = []
-        self.gl = MDGridLayout(
-            cols = 6,
-            spacing = 20,
-            pos_hint = {"center_x" : 0.55, "center_y" : 0.25},
-            size_hint = (0.1, 0.1)
-        )
-        for letter in self.word:
-            self.list_letter_button.append(MDFillRoundFlatButton(
-                text = letter,
-                font_size=15
+        # начАвшись -> 9 букв, два ряда
+        self.list_letter_button = [MDFillRoundFlatButton(text=str(letter), font_size=15, size_hint = (0.1,0.1)) for letter in self.word]
+        count = 0
+        num_rows = len(self.list_letter_button) // 5 + 1
+        space_btw_rows = 0.4 / (num_rows + 1)
+        for i in range(num_rows - 1):
+            temp = self.placement_in_row(5)
+            for j in range(5):
+                self.list_letter_button[i * 5 + j].pos_hint = {'center_x': temp[j],
+                                                               'center_y': 0.6 - space_btw_rows * (i + 1)}
+        temp = self.placement_in_row(len(self.list_letter_button) % 5)
+        for j in range(len(self.list_letter_button) % 5):
+            self.list_letter_button[-len(self.list_letter_button) % 5 + j].pos_hint = {'center_x':temp[j] ,
+                                                               'center_y': 0.4 + space_btw_rows}
 
-            ))
-            self.gl.add_widget(self.list_letter_button[-1])
+        for button in self.list_letter_button:
+            self.add_widget(button)
 
-        self.add_widget(self.gl)
-
-
-
-
+    def placement_in_row(self, num):
+        if num == 5:
+            return [0.15, 0.325, 0.5, 0.675, 0.85]
+        if num == 4:
+            return [0.2, 0.4, 0.6, 0.8]
+        if num == 3:
+            return [0.325, 0.5, 0.675]
+        if num == 2:
+            return [0.4, 0.6]
+        else:
+            return [0.5]
 
 
 class TestScreen(Screen):
-    def __init__(self,manager, **kwargs):
+    def __init__(self, manager, **kwargs):
         super().__init__(**kwargs)
-

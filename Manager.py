@@ -32,12 +32,13 @@ class AppManager(ScreenManager):
 
         self.HomeWindow = HomeScreen(self, name="Home")
         self.TrainingWindow = TrainingScreen(self, name="Training")
-        self.My_dictionaryWindow = My_dictionaryScreen(self, name="My_dictionary")
+        self.About_AppWindow = About_AppScreen(self, name="About_App")
         self.StatisticWindow = StatisticScreen(self, name="Statistic")
         self.TheoryWindow = TheoryScreen(self, name="Theory")
         self.RatingWindow = RatingScreen(self, name="Rating")
         self.PracticeWindow = PracticeScreen(self, name="Practice")
         self.TestWindow = TestScreen(self, name="Test")
+        self.About_AppWindow =About_AppScreen(self, name="About_App")
 
         if not is_authorized:
             self.add_widget(self.SingUpWindow)
@@ -46,7 +47,6 @@ class AppManager(ScreenManager):
 
             self.add_widget(self.HomeWindow)
             self.add_widget(self.TrainingWindow)
-            self.add_widget(self.My_dictionaryWindow)
             self.add_widget(self.StatisticWindow)
             self.add_widget(self.TheoryWindow)
             self.add_widget(self.RatingWindow)
@@ -56,7 +56,6 @@ class AppManager(ScreenManager):
         else:
             self.add_widget(self.HomeWindow)
             self.add_widget(self.TrainingWindow)
-            self.add_widget(self.My_dictionaryWindow)
             self.add_widget(self.StatisticWindow)
             self.add_widget(self.TheoryWindow)
             self.add_widget(self.RatingWindow)
@@ -75,6 +74,11 @@ class AppManager(ScreenManager):
 
     def swith_to_singup(self, button):
         self.switch_to(self.SingUpWindow, direction='right')
+
+    def swith_to_app_screen(self, button):
+        self.switch_to(self.About_AppScreen, direction='right')
+
+
 
     def switch_to_home_left(self, button = None):
         self.switch_to(self.HomeWindow, direction='left')

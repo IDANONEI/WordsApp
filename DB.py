@@ -48,7 +48,7 @@ class DataBase:
                         return True
         return False
 
-    def check_existing_user(self, u):
+    def check_not_existing_user(self, u):
         users = self.cur.execute("""SELECT UserID FROM UserTable WHERE user_name=?""", (u,)).fetchone()
         if users is None:
             users = self.cur.execute("""SELECT UserID FROM UserTable WHERE mail=?""", (u,)).fetchone()
