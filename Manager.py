@@ -25,6 +25,21 @@ class AppManager(ScreenManager):
         super().__init__(**kwargs)
 
         self.db = db
+        self.answers_list = self.db.take_answer()
+        self.word_groups = {"new": [], "red":[],  "yellow": [], "green": []}
+        for i in range(len(self.answers_list['correct'])):
+            total_answers = self.answers_list['correct'][i] + self.answers_list['wrong'][i]
+            if total_answers == 0:
+                self.word_groups["new"].append(i)
+            elif self.answers_list['correct'][i]/total_answers < 1/3:
+                self.word_groups["red"].append(i)
+            elif 1/3 <= self.answers_list['correct'][i]/total_answers <= 2/3:
+                self.word_groups["yellow"].append(i)
+            else:
+                self.word_groups["green"].append(i)
+
+        # self.answers_list['correct'][0] = 2
+        # print(self.word_groups)
 
         self.SingUpWindow = SingUpScreen(self, name="SingUp")
         self.ForgotPasswordWindow = ForgotPasswordScreen(self, name="ForgotPassword")
@@ -39,6 +54,8 @@ class AppManager(ScreenManager):
         self.PracticeWindow = PracticeScreen(self, name="Practice")
         self.TestWindow = TestScreen(self, name="Test")
         self.About_AppWindow =About_AppScreen(self, name="About_App")
+        self.SettingsWindow = Settings_AppScreen(self, name="Settings_App")
+
 
         if not is_authorized:
             self.add_widget(self.SingUpWindow)
@@ -52,6 +69,7 @@ class AppManager(ScreenManager):
             self.add_widget(self.RatingWindow)
             self.add_widget(self.PracticeWindow)
             self.add_widget(self.TestWindow)
+            self.add_widget(self.SettingsWindow)
 
         else:
             self.add_widget(self.HomeWindow)
@@ -61,10 +79,15 @@ class AppManager(ScreenManager):
             self.add_widget(self.RatingWindow)
             self.add_widget(self.PracticeWindow)
             self.add_widget(self.TestWindow)
+            self.add_widget(self.SettingsWindow)
 
             self.add_widget(self.SingUpWindow)
             self.add_widget(self.ForgotPasswordWindow)
             self.add_widget(self.RegistrationWindow)
+
+    def __del__(self):
+        print("Вызвался деструктор")
+        self.db.give_answer(self.answers_list['correct'], self.answers_list['wrong'])
 
     def switch_to_registration(self, button):
         self.switch_to(self.RegistrationWindow, direction='left')
@@ -77,8 +100,6 @@ class AppManager(ScreenManager):
 
     def swith_to_app_screen(self, button):
         self.switch_to(self.About_AppScreen, direction='right')
-
-
 
     def switch_to_home_left(self, button = None):
         self.switch_to(self.HomeWindow, direction='left')
@@ -103,6 +124,9 @@ class AppManager(ScreenManager):
 
     def switch_to_test(self, button):
         self.switch_to(self.TestWindow, direction='left')
+
+    def switch_to_settings(self, button):
+        self.switch_to(self.SettingsWindow, direction='left')
 
 
     def cleen_text(self, instance, value):
