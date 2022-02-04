@@ -16,15 +16,16 @@ from kivymd.uix.button import MDRectangleFlatButton, MDRoundFlatButton, MDRaised
 from kivymd.uix.label import MDLabel
 from kivymd.uix.textfield import MDTextFieldRound
 
+
 def change_current_info(info):
-    with open("Email_login_password.txt","w",encoding='utf-8') as f:
+    with open("Email_login_password.txt", "w", encoding='utf-8') as f:
         f.write(str(info[0]) + "\n")
         f.write(str(info[1]) + "\n")
         f.write(str(info[2]) + "\n")
         f.write(str(info[3]) + "\n")
 
 
-class SingUpScreen (Screen):
+class SingUpScreen(Screen):
     def __init__(self, manager, **kwargs):
         super(SingUpScreen, self).__init__(**kwargs)
 
@@ -32,10 +33,10 @@ class SingUpScreen (Screen):
 
         self.lbl = MDLabel(
             text="СВЁКЛА",
-            font_style = "H3",
+            font_style="H3",
             halign="center",
-            pos_hint =  {'center_x':0.5, 'center_y':0.85},
-            theme_text_color = "Custom",
+            pos_hint={'center_x': 0.5, 'center_y': 0.85},
+            theme_text_color="Custom",
             text_color=(147 / 255, 7 / 255, 200 / 255)
         )
 
@@ -49,53 +50,51 @@ class SingUpScreen (Screen):
             text_color=(147 / 255, 7 / 255, 200 / 255)
         )
 
-
         self.textinputlogin = MDTextFieldRound(
             hint_text="Логин или почта",
             icon_left="email",
             color_active=(1, 1, 1, 1),
-            pos_hint = {'center_x':0.5, 'center_y':0.6},
-            normal_color=(120/255, 0, 120/255),
-            line_color=(1/255, 1/255, 1/255, 1),
-            size_hint = (0.45, 0.07),
+            pos_hint={'center_x': 0.5, 'center_y': 0.6},
+            normal_color=(120 / 255, 0, 120 / 255),
+            line_color=(1 / 255, 1 / 255, 1 / 255, 1),
+            size_hint=(0.45, 0.07),
         )
-
 
         self.textinputlogin.bind(focus=manager.change_icon_color)
 
-        self.textinputpassword =MDTextFieldRound(
+        self.textinputpassword = MDTextFieldRound(
             hint_text="Введите пароль",
             icon_left="key-variant",
             icon_left_color=(0, 0, 0, 1),
             color_active=(1, 1, 1, 1),
             pos_hint={'center_x': 0.5, 'center_y': 0.50},
-            normal_color=(120/255, 0, 120/255),
+            normal_color=(120 / 255, 0, 120 / 255),
             line_color=(1, 0, 1, 1),
             size_hint=(0.45, 0.07),
         )
 
         self.textinputpassword.bind(focus=manager.change_icon_color)
 
-        self.sing_up=MDFillRoundFlatButton(text='Авторизоваться',
-            text_color=(1, 1, 1, 1),
-            md_bg_color=(120/255, 0, 120/255),
-            pos_hint={'center_x': 0.5, 'center_y': 0.38},
-            on_press = self.check_user,
-            size_hint = (0.5, 0.07)
-        )
+        self.sing_up = MDFillRoundFlatButton(text='Авторизоваться',
+                                             text_color=(1, 1, 1, 1),
+                                             md_bg_color=(120 / 255, 0, 120 / 255),
+                                             pos_hint={'center_x': 0.5, 'center_y': 0.38},
+                                             on_press=self.check_user,
+                                             size_hint=(0.5, 0.07)
+                                             )
 
-        self.registrate=MDFillRoundFlatButton(
+        self.registrate = MDFillRoundFlatButton(
             text='Регистрация',
-            text_color=(1, 1,1, 1),
-            md_bg_color=(120/255, 0, 120/255),
+            text_color=(1, 1, 1, 1),
+            md_bg_color=(120 / 255, 0, 120 / 255),
             pos_hint={'center_x': 0.5, 'center_y': 0.22},
-            on_press = manager.switch_to_registration,
+            on_press=manager.switch_to_registration,
             size_hint=(0.5, 0.07)
         )
         self.forgotpassword = MDFillRoundFlatButton(
             text='Забыл(а) логин или пароль',
             text_color=(1, 1, 1, 1),
-            md_bg_color=(120/255, 0, 120/255),
+            md_bg_color=(120 / 255, 0, 120 / 255),
             pos_hint={'center_x': 0.5, 'center_y': 0.12},
             on_press=manager.switch_to_forgot_password,
             size_hint=(0.5, 0.07)
@@ -109,8 +108,6 @@ class SingUpScreen (Screen):
         self.add_widget(self.registrate)
         self.add_widget(self.forgotpassword)
 
-
-
     def check_user(self, button):
         st = self.textinputlogin.text
         st = st.lower()
@@ -121,7 +118,7 @@ class SingUpScreen (Screen):
                 separator_color=(147 / 255, 7 / 255, 200 / 255),
                 title_color=(147 / 255, 7 / 255, 200 / 255),
                 size_hint=(0.5, 0.5))
-            self.pop.content.btn.bind(on_press = self.pop.dismiss)
+            self.pop.content.btn.bind(on_press=self.pop.dismiss)
             self.pop.open()
 
         elif self.man.db.check_user(st, self.textinputpassword.text):
@@ -129,33 +126,32 @@ class SingUpScreen (Screen):
             self.man.switch_to_home_left()
         else:
             self.pop = Popup(
-                title = "Ошибка",
-                content = PopWindow("Неверный логин или пароль", "Продолжить",self.man),
-                separator_color = (147 / 255, 7 / 255, 200 / 255),
-                title_color = (147 / 255, 7 / 255, 200 / 255),
-                size_hint = (0.5, 0.5),
+                title="Ошибка",
+                content=PopWindow("Неверный логин или пароль", "Продолжить", self.man),
+                separator_color=(147 / 255, 7 / 255, 200 / 255),
+                title_color=(147 / 255, 7 / 255, 200 / 255),
+                size_hint=(0.5, 0.5),
             )
-            self.pop.content.btn.bind(on_press = self.pop.dismiss)
+            self.pop.content.btn.bind(on_press=self.pop.dismiss)
             self.pop.open()
 
 
-
 class PopWindow(FloatLayout):
-    def __init__(self, lbl_text, btn_text,manager, **kwargs):
+    def __init__(self, lbl_text, btn_text, manager, **kwargs):
         super().__init__(**kwargs)
-        self.man=manager
+        self.man = manager
 
-        self.lbl=MDLabel(
+        self.lbl = MDLabel(
             text=lbl_text,
             font_style="H6",
             halign="center",
             pos_hint={"x": 0.2, "y": 0.7},
             theme_text_color="Custom",
             text_color=(147 / 255, 7 / 255, 200 / 255),
-            size_hint = [0.6, 0.2]
+            size_hint=[0.6, 0.2]
         )
 
-        self.btn =MDFillRoundFlatButton(
+        self.btn = MDFillRoundFlatButton(
             text=btn_text,
             text_color=(1, 1, 1, 1),
             md_bg_color=(120 / 255, 0, 120 / 255),
@@ -167,10 +163,8 @@ class PopWindow(FloatLayout):
         self.add_widget(self.btn)
 
 
-
 class ForgotPasswordScreen(Screen):
-    def __init__(self, manager,  **kwargs):
-
+    def __init__(self, manager, **kwargs):
         self.man = manager
 
         super(ForgotPasswordScreen, self).__init__(**kwargs)
@@ -194,34 +188,33 @@ class ForgotPasswordScreen(Screen):
             size_hint=(0.6, 1)
         )
 
-        self.mail= MDTextFieldRound(
+        self.mail = MDTextFieldRound(
             hint_text="Введите почту",
             icon_left="email",
             color_active=(1, 1, 1, 1),
             pos_hint={'center_x': 0.5, 'center_y': 0.45},
-            normal_color=(120/255, 0, 120/255),
+            normal_color=(120 / 255, 0, 120 / 255),
             line_color=(1, 0, 1, 1),
             size_hint=(0.45, 0.07),
         )
 
         self.mail.bind(focus=manager.change_icon_color)
 
-
-        self.btn=MDFillRoundFlatButton(
+        self.btn = MDFillRoundFlatButton(
             text='Восстановить',
             text_color=(1, 1, 1, 1),
-            md_bg_color=(120/255, 0, 120/255),
+            md_bg_color=(120 / 255, 0, 120 / 255),
             pos_hint={'center_x': 0.5, 'center_y': 0.35},
-            on_press= self.restore,
-            size_hint = (0.5, 0.07)
+            on_press=self.restore,
+            size_hint=(0.5, 0.07)
         )
         self.back_btn = MDFillRoundFlatButton(
             text='Назад',
             text_color=(1, 1, 1, 1),
-            md_bg_color=(120/255, 0, 120/255),
+            md_bg_color=(120 / 255, 0, 120 / 255),
             pos_hint={'center_x': 0.5, 'center_y': 0.20},
             on_press=manager.swith_to_singup,
-            size_hint = (0.5, 0.07)
+            size_hint=(0.5, 0.07)
         )
 
         self.add_widget(self.forgot_lbl)
@@ -231,24 +224,23 @@ class ForgotPasswordScreen(Screen):
         self.add_widget(self.back_btn)
 
     def restore(self, button):
-
-
         st_user = self.mail.text
 
         if self.man.db.check_not_existing_user(st_user):
             self.pop = Popup(title="Ошибка", content=PopWindow(
-                "Неверная почта", "Продолжить", self.man),size_hint=(None, None), size=(dp(400), dp(400)))
+                "Неверная почта", "Продолжить", self.man), size_hint=(None, None), size=(dp(400), dp(400)))
             self.pop.content.btn.bind(on_press=self.pop.dismiss)
             self.pop.open()
 
+
 class RegistrationScreen(Screen):
-    def __init__(self, manager,  **kwargs):
+    def __init__(self, manager, **kwargs):
 
         self.man = manager
 
         super(RegistrationScreen, self).__init__(**kwargs)
 
-        self.lbl= MDLabel(
+        self.lbl = MDLabel(
             text="Регистрация",
             font_style="H3",
             halign="center",
@@ -257,13 +249,12 @@ class RegistrationScreen(Screen):
             text_color=(147 / 255, 7 / 255, 200 / 255)
         )
 
-
-        self.textinputlogin=MDTextFieldRound(
+        self.textinputlogin = MDTextFieldRound(
             hint_text="Введите логин",
             icon_left="account-box",
             color_active=(1, 1, 1, 1),
             pos_hint={'center_x': 0.5, 'center_y': 0.7},
-            normal_color=(120/255, 0, 120/255),
+            normal_color=(120 / 255, 0, 120 / 255),
             line_color=(1, 0, 1, 1),
             size_hint=(0.45, 0.07),
         )
@@ -275,49 +266,48 @@ class RegistrationScreen(Screen):
             icon_left="email",
             color_active=(1, 1, 1, 1),
             pos_hint={'center_x': 0.5, 'center_y': 0.58},
-            normal_color=(120/255, 0, 120/255),
+            normal_color=(120 / 255, 0, 120 / 255),
             line_color=(1, 0, 1, 1),
             size_hint=(0.45, 0.07),
         )
 
         self.textinputmail.bind(focus=manager.change_icon_color)
 
-        self.textinputpassword=MDTextFieldRound(
+        self.textinputpassword = MDTextFieldRound(
             hint_text="Придумайте пароль",
             icon_left="key-variant",
             color_active=(1, 1, 1, 1),
             pos_hint={'center_x': 0.5, 'center_y': 0.46},
-            normal_color=(120/255, 0, 120/255),
+            normal_color=(120 / 255, 0, 120 / 255),
             line_color=(1, 0, 1, 1),
             size_hint=(0.45, 0.07),
         )
         self.textinputpassword.bind(focus=manager.change_icon_color)
 
-        self.textinputpasswordtoo=MDTextFieldRound(
+        self.textinputpasswordtoo = MDTextFieldRound(
             hint_text="Повторите пароль",
             icon_left="key-variant",
             color_active=(1, 1, 1, 1),
             pos_hint={'center_x': 0.5, 'center_y': 0.34},
-            normal_color=(120/255, 0, 120/255),
+            normal_color=(120 / 255, 0, 120 / 255),
             line_color=(1, 0, 1, 1),
             size_hint=(0.45, 0.07),
         )
         self.textinputpasswordtoo.bind(focus=manager.change_icon_color)
 
-
-        self.reg_btn=MDFillRoundFlatButton(
+        self.reg_btn = MDFillRoundFlatButton(
             text='Регистрация',
             text_color=(1, 1, 1, 1),
-            md_bg_color=(120/255, 0, 120/255),
+            md_bg_color=(120 / 255, 0, 120 / 255),
             pos_hint={'center_x': 0.5, 'center_y': 0.22},
-            on_press = self.check_reg,
+            on_press=self.check_reg,
             size_hint=(0.5, 0.07)
         )
-        self.back_btn=MDFillRoundFlatButton(
-            text='Назад',text_color=(1, 1, 1, 1),
-            md_bg_color=(120/255, 0, 120/255),
+        self.back_btn = MDFillRoundFlatButton(
+            text='Назад', text_color=(1, 1, 1, 1),
+            md_bg_color=(120 / 255, 0, 120 / 255),
             pos_hint={'center_x': 0.5, 'center_y': 0.12},
-            on_press = manager.swith_to_singup,
+            on_press=manager.swith_to_singup,
             size_hint=(0.5, 0.07)
         )
 
@@ -329,38 +319,46 @@ class RegistrationScreen(Screen):
         self.add_widget(self.reg_btn)
         self.add_widget(self.back_btn)
 
-
-    def check_reg(self,button):
+    def check_reg(self, button):
         st_user = self.textinputlogin.text
         st_user = st_user.lower()
         st_mail = self.textinputmail.text
 
-        if self.textinputpassword.text != self.textinputpasswordtoo.text or self.textinputpassword.text =="" :
-            self.pop = Popup(title="Ошибка", content=PopWindow("Неверный повтор пароля", "Продолжить", self.man),size_hint=(None, None), size=(dp(400), dp(400)))
-            self.pop.content.btn.bind(on_press = self.pop.dismiss)
+        if self.textinputpassword.text != self.textinputpasswordtoo.text or self.textinputpassword.text == "":
+            self.pop = Popup(title="Ошибка", content=PopWindow("Неверный повтор пароля", "Продолжить", self.man),
+                             size_hint=(None, None), size=(dp(400), dp(400)))
+            self.pop.content.btn.bind(on_press=self.pop.dismiss)
             self.pop.open()
 
-        elif self.textinputlogin.text =="":
-            self.pop = Popup(title="Ошибка",content=PopWindow("Логин обязательное поле", "Продолжить", self.man),size_hint=(None, None), size=(dp(400), dp(400)))
-            self.pop.content.btn.bind(on_press = self.pop.dismiss)
+        elif self.textinputlogin.text == "":
+            self.pop = Popup(title="Ошибка", content=PopWindow("Логин обязательное поле", "Продолжить", self.man),
+                             size_hint=(None, None), size=(dp(400), dp(400)))
+            self.pop.content.btn.bind(on_press=self.pop.dismiss)
             self.pop.open()
 
-        elif self.textinputmail.text =="":
-            self.pop = Popup(title="Ошибка",content=PopWindow("Почта обязательное поле", "Продолжить", self.man),size_hint=(None, None), size=(dp(400), dp(400)))
-            self.pop.content.btn.bind(on_press = self.pop.dismiss)
+        elif self.textinputmail.text == "":
+            self.pop = Popup(title="Ошибка", content=PopWindow("Почта обязательное поле", "Продолжить", self.man),
+                             size_hint=(None, None), size=(dp(400), dp(400)))
+            self.pop.content.btn.bind(on_press=self.pop.dismiss)
             self.pop.open()
 
         elif self.man.db.check_mail(st_mail):
-            self.pop = Popup(title="Ошибка", content=PopWindow("Пользователь с такой почтой уже существует", "Продолжить", self.man),size_hint=(None, None), size=(dp(400), dp(400)))
-            self.pop.content.btn.bind(on_press = self.pop.dismiss)
+            self.pop = Popup(title="Ошибка",
+                             content=PopWindow("Пользователь с такой почтой уже существует", "Продолжить", self.man),
+                             size_hint=(None, None), size=(dp(400), dp(400)))
+            self.pop.content.btn.bind(on_press=self.pop.dismiss)
             self.pop.open()
 
         elif self.man.db.check_not_existing_user(st_user):
-            self.man.db.user_reg(st_user, self.textinputpassword.text,self.textinputmail.text)
+            self.man.db.user_reg(st_user, self.textinputpassword.text, self.textinputmail.text)
             change_current_info(self.man.db.user_info_l_or_e(self.textinputlogin.text))
+            with open("answers_list_file.txt", "w", encoding='utf-8') as f:
+                f.write(("0|" * 318)[:-1] + "\n")
+                f.write(("0|" * 318)[:-1])
             self.man.switch_to_home_left()
 
         else:
-            self.pop = Popup(title="Ошибка", content=PopWindow("Такой логин занят", "Продолжить", self.man),size_hint=(None, None), size=(dp(400), dp(400)))
+            self.pop = Popup(title="Ошибка", content=PopWindow("Такой логин занят", "Продолжить", self.man),
+                             size_hint=(None, None), size=(dp(400), dp(400)))
             self.pop.content.btn.bind(on_press=self.pop.dismiss)
             self.pop.open()

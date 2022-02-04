@@ -26,20 +26,7 @@ class AppManager(ScreenManager):
 
         self.db = db
         self.answers_list = self.db.take_answer()
-        self.word_groups = {"new": [], "red":[],  "yellow": [], "green": []}
-        for i in range(len(self.answers_list['correct'])):
-            total_answers = self.answers_list['correct'][i] + self.answers_list['wrong'][i]
-            if total_answers == 0:
-                self.word_groups["new"].append(i)
-            elif self.answers_list['correct'][i]/total_answers < 1/3:
-                self.word_groups["red"].append(i)
-            elif 1/3 <= self.answers_list['correct'][i]/total_answers <= 2/3:
-                self.word_groups["yellow"].append(i)
-            else:
-                self.word_groups["green"].append(i)
-
-        # self.answers_list['correct'][0] = 2
-        # print(self.word_groups)
+        self.divide_into_groups()
 
         self.SingUpWindow = SingUpScreen(self, name="SingUp")
         self.ForgotPasswordWindow = ForgotPasswordScreen(self, name="ForgotPassword")
@@ -53,9 +40,9 @@ class AppManager(ScreenManager):
         self.RatingWindow = RatingScreen(self, name="Rating")
         self.PracticeWindow = PracticeScreen(self, name="Practice")
         self.TestWindow = TestScreen(self, name="Test")
-        self.About_AppWindow =About_AppScreen(self, name="About_App")
+        self.About_AppWindow = About_AppScreen(self, name="About_App")
         self.SettingsWindow = Settings_AppScreen(self, name="Settings_App")
-
+        self.Change_passwordWindow = Change_passwordScreen(self,name="change_password")
 
         if not is_authorized:
             self.add_widget(self.SingUpWindow)
@@ -70,6 +57,7 @@ class AppManager(ScreenManager):
             self.add_widget(self.PracticeWindow)
             self.add_widget(self.TestWindow)
             self.add_widget(self.SettingsWindow)
+            self.add_widget(self.Change_passwordWindow)
 
         else:
             self.add_widget(self.HomeWindow)
@@ -80,6 +68,7 @@ class AppManager(ScreenManager):
             self.add_widget(self.PracticeWindow)
             self.add_widget(self.TestWindow)
             self.add_widget(self.SettingsWindow)
+            self.add_widget(self.Change_passwordWindow)
 
             self.add_widget(self.SingUpWindow)
             self.add_widget(self.ForgotPasswordWindow)
@@ -87,7 +76,21 @@ class AppManager(ScreenManager):
 
     def __del__(self):
         print("Вызвался деструктор")
+        self.PracticeWindow.give_answers_list()
         self.db.give_answer(self.answers_list['correct'], self.answers_list['wrong'])
+
+    def divide_into_groups(self):
+        self.word_groups = {"new": [], "red": [], "yellow": [], "green": []}
+        for i in range(len(self.answers_list['correct'])):
+            total_answers = self.answers_list['correct'][i] + self.answers_list['wrong'][i]
+            if total_answers == 0:
+                self.word_groups["new"].append(i)
+            elif self.answers_list['correct'][i] / total_answers < 1 / 3:
+                self.word_groups["red"].append(i)
+            elif 1 / 3 <= self.answers_list['correct'][i] / total_answers <= 2 / 3:
+                self.word_groups["yellow"].append(i)
+            else:
+                self.word_groups["green"].append(i)
 
     def switch_to_registration(self, button):
         self.switch_to(self.RegistrationWindow, direction='left')
@@ -95,20 +98,23 @@ class AppManager(ScreenManager):
     def switch_to_forgot_password(self, button):
         self.switch_to(self.ForgotPasswordWindow, direction='left')
 
-    def swith_to_singup(self, button):
+    def swith_to_singup(self, button=None):
         self.switch_to(self.SingUpWindow, direction='right')
 
     def swith_to_app_screen(self, button):
         self.switch_to(self.About_AppScreen, direction='right')
 
-    def switch_to_home_left(self, button = None):
+    def switch_to_home_left(self, button=None):
         self.switch_to(self.HomeWindow, direction='left')
 
     def switch_to_home_right(self, button=None):
         self.switch_to(self.HomeWindow, direction='right')
 
-    def switch_to_training(self, button):
+    def switch_to_training_left(self, button):
         self.switch_to(self.TrainingWindow, direction='left')
+
+    def switch_to_training_right(self, button=None):
+        self.switch_to(self.TrainingWindow, direction='right')
 
     def switch_to_dictionary(self, button):
         self.switch_to(self.My_dictionaryWindow, direction='left')
@@ -120,6 +126,7 @@ class AppManager(ScreenManager):
         self.switch_to(self.TheoryWindow, direction='left')
 
     def switch_to_practice(self, button):
+        self.PracticeWindow = PracticeScreen(self, name="Practice")
         self.switch_to(self.PracticeWindow, direction='left')
 
     def switch_to_test(self, button):
@@ -128,13 +135,16 @@ class AppManager(ScreenManager):
     def switch_to_settings(self, button):
         self.switch_to(self.SettingsWindow, direction='left')
 
+    def switch_change_password(self,button):
+        self.switch_to(self.Change_passwordWindow, direction='left')
 
-    def cleen_text(self, instance, value):
-        if instance.text == "Логин":
-            if value:
-                instance.text = ""
-            else:
-                instance.foreground_color = (192 / 255, 192 / 255, 192 / 255, 1)
+
+    # def cleen_text(self, instance, value):
+    #     if instance.text == "Логин":
+    #         if value:
+    #             instance.text = ""
+    #         else:
+    #             instance.foreground_color = (192 / 255, 192 / 255, 192 / 255, 1)
 
     def change_icon_color(self, instance, value):
         if value:
