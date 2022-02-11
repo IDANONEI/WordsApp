@@ -1,6 +1,7 @@
 import sqlite3
 from random import shuffle
 
+from Constans import NUM_WORDS
 
 class DataBase:
 
@@ -71,7 +72,7 @@ class DataBase:
         users = self.cur.execute("""SELECT user_name FROM UserTable""").fetchall()
         id_new_user = len(users) + 1
         self.cur.execute("""INSERT INTO UserTable VALUES (?, ?, ?, ?, ?, ?)""",
-                         (id_new_user, login, password, mail, ("0|" * 318)[:-1], ("0|" * 318)[:-1]))
+                         (id_new_user, login, password, mail, ("0|" * NUM_WORDS)[:-1], ("0|" * NUM_WORDS)[:-1]))
         self.bd.commit()
 
     def user_info_id(self, id):
@@ -100,12 +101,18 @@ class DataBase:
 
     def give_answer(self, correct_answers, wrong_answers):
         with open("Email_login_password.txt", "r", encoding='utf-8') as f:
-            id = int(f.readlines()[0].strip())
+            info = f.readlines()
+        if info:
+            id = int(info[0].strip())
             correct_answers = "|".join(list(map(str, correct_answers)))
             wrong_answers = "|".join(list(map(str, wrong_answers)))
             self.cur.execute("""UPDATE UserTable SET correct_answers=? , wrong_answers=? WHERE UserID=?""",
                              (correct_answers, wrong_answers, id,))
             self.bd.commit()
+    def change_password(self, id_user,password):
+        self.cur.execute("""UPDATE UserTable SET user_password=? WHERE UserID=?""",
+                         (password, int(id_user),))
+        self.bd.commit()
 
 
 new_db = DataBase()

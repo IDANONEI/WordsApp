@@ -16,6 +16,7 @@ from kivymd.uix.button import MDRectangleFlatButton, MDRoundFlatButton, MDRaised
 from kivymd.uix.label import MDLabel
 from kivymd.uix.textfield import MDTextFieldRound
 
+from Constans import NUM_WORDS
 
 def change_current_info(info):
     with open("Email_login_password.txt", "w", encoding='utf-8') as f:
@@ -30,6 +31,8 @@ class SingUpScreen(Screen):
         super(SingUpScreen, self).__init__(**kwargs)
 
         self.man = manager
+
+
 
         self.lbl = MDLabel(
             text="СВЁКЛА",
@@ -59,6 +62,8 @@ class SingUpScreen(Screen):
             line_color=(1 / 255, 1 / 255, 1 / 255, 1),
             size_hint=(0.45, 0.07),
         )
+        self.textinputlogin.text = ""
+
 
         self.textinputlogin.bind(focus=manager.change_icon_color)
 
@@ -108,6 +113,8 @@ class SingUpScreen(Screen):
         self.add_widget(self.registrate)
         self.add_widget(self.forgotpassword)
 
+
+
     def check_user(self, button):
         st = self.textinputlogin.text
         st = st.lower()
@@ -124,6 +131,7 @@ class SingUpScreen(Screen):
         elif self.man.db.check_user(st, self.textinputpassword.text):
             change_current_info(self.man.db.user_info_l_or_e(self.textinputlogin.text))
             self.man.switch_to_home_left()
+
         else:
             self.pop = Popup(
                 title="Ошибка",
@@ -134,6 +142,13 @@ class SingUpScreen(Screen):
             )
             self.pop.content.btn.bind(on_press=self.pop.dismiss)
             self.pop.open()
+
+    def clear_textinput(self):
+        self.textinputpassword.text = ""
+        self.textinputlogin.text = ""
+
+
+
 
 
 class PopWindow(FloatLayout):
@@ -213,7 +228,7 @@ class ForgotPasswordScreen(Screen):
             text_color=(1, 1, 1, 1),
             md_bg_color=(120 / 255, 0, 120 / 255),
             pos_hint={'center_x': 0.5, 'center_y': 0.20},
-            on_press=manager.swith_to_singup,
+            on_press=manager.switch_to_singup,
             size_hint=(0.5, 0.07)
         )
 
@@ -307,7 +322,7 @@ class RegistrationScreen(Screen):
             text='Назад', text_color=(1, 1, 1, 1),
             md_bg_color=(120 / 255, 0, 120 / 255),
             pos_hint={'center_x': 0.5, 'center_y': 0.12},
-            on_press=manager.swith_to_singup,
+            on_press=manager.switch_to_singup,
             size_hint=(0.5, 0.07)
         )
 
@@ -353,12 +368,17 @@ class RegistrationScreen(Screen):
             self.man.db.user_reg(st_user, self.textinputpassword.text, self.textinputmail.text)
             change_current_info(self.man.db.user_info_l_or_e(self.textinputlogin.text))
             with open("answers_list_file.txt", "w", encoding='utf-8') as f:
-                f.write(("0|" * 318)[:-1] + "\n")
-                f.write(("0|" * 318)[:-1])
+                f.write(("0|" * NUM_WORDS)[:-1] + "\n")
+                f.write(("0|" * NUM_WORDS)[:-1])
             self.man.switch_to_home_left()
-
         else:
             self.pop = Popup(title="Ошибка", content=PopWindow("Такой логин занят", "Продолжить", self.man),
                              size_hint=(None, None), size=(dp(400), dp(400)))
             self.pop.content.btn.bind(on_press=self.pop.dismiss)
             self.pop.open()
+
+    def clear_textinput(self):
+        self.textinputlogin.text = ""
+        self.textinputmail.text = ""
+        self.textinputpassword.text = ""
+        self.textinputpasswordtoo.text = ""

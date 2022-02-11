@@ -19,7 +19,6 @@ from kivymd.uix.textfield import MDTextFieldRound
 from Regisration import *
 from Account import *
 
-
 class AppManager(ScreenManager):
     def __init__(self, db, is_authorized, **kwargs):
         super().__init__(**kwargs)
@@ -98,10 +97,11 @@ class AppManager(ScreenManager):
     def switch_to_forgot_password(self, button):
         self.switch_to(self.ForgotPasswordWindow, direction='left')
 
-    def swith_to_singup(self, button=None):
+    def switch_to_singup(self, button=None):
+
         self.switch_to(self.SingUpWindow, direction='right')
 
-    def swith_to_app_screen(self, button):
+    def switch_to_app_screen(self, button):
         self.switch_to(self.About_AppScreen, direction='right')
 
     def switch_to_home_left(self, button=None):
@@ -130,7 +130,9 @@ class AppManager(ScreenManager):
         self.switch_to(self.PracticeWindow, direction='left')
 
     def switch_to_test(self, button):
+        self.TestWindow.add_on_screen()
         self.switch_to(self.TestWindow, direction='left')
+
 
     def switch_to_settings(self, button):
         self.switch_to(self.SettingsWindow, direction='left')
@@ -138,13 +140,18 @@ class AppManager(ScreenManager):
     def switch_change_password(self,button):
         self.switch_to(self.Change_passwordWindow, direction='left')
 
+    def switch_to_statistic_word(self, button):
 
-    # def cleen_text(self, instance, value):
-    #     if instance.text == "Логин":
-    #         if value:
-    #             instance.text = ""
-    #         else:
-    #             instance.foreground_color = (192 / 255, 192 / 255, 192 / 255, 1)
+        if button.text == "Хорошо усвоенные":
+            self.StatisticWordsWindow = StatisticWordsScreen(self, "green", name = "Statistic_words")
+
+        elif button.text == "Средне усвоенные":
+            self.StatisticWordsWindow = StatisticWordsScreen(self, "yellow", name = "Statistic_words")
+
+        elif button.text == "Не усвоенные":
+            self.StatisticWordsWindow = StatisticWordsScreen(self, "red", name = "Statistic_words")
+
+        self.switch_to(self.StatisticWordsWindow, direction = 'left')
 
     def change_icon_color(self, instance, value):
         if value:

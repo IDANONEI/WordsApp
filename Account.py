@@ -9,11 +9,15 @@ from kivy.uix.label import Label
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.anchorlayout import AnchorLayout
+from kivy.uix.scrollview import ScrollView
 from kivy.uix.textinput import TextInput
 from kivy.uix.popup import Popup
 from kivy.uix.floatlayout import FloatLayout
+from kivymd.uix.list import MDList, ThreeLineListItem
 
-from random import randint, choice
+from Regisration import change_current_info
+
+from random import randint, choice, shuffle
 from kivy.uix.screenmanager import Screen
 from kivymd.app import MDApp
 from kivymd.uix.button import MDRectangleFlatButton, MDRoundFlatButton, MDRaisedButton, MDFillRoundFlatButton, \
@@ -23,9 +27,12 @@ from kivymd.uix.label import MDLabel, MDIcon
 from kivymd.uix.selectioncontrol import MDCheckbox
 from kivymd.uix.textfield import MDTextFieldRound
 
+
+import Regisration
+from Constans import VOWELS
 from Regisration import PopWindow
 
-vowels = "АОЭЕИЫУЁЮЯ"
+
 
 
 class HomeScreen(Screen):
@@ -57,7 +64,7 @@ class HomeScreen(Screen):
             text_color=(1, 1, 1, 1),
             md_bg_color=(120 / 255, 0, 120 / 255),
             pos_hint={'center_x': 0.5, 'center_y': 0.58},
-            # on_press=
+            on_press=self.man.switch_to_statistic,
             size_hint=(0.5, 0.07)
         )
 
@@ -97,6 +104,7 @@ class HomeScreen(Screen):
 
 
 class TrainingScreen(Screen):
+
     def __init__(self, manager, **kwargs):
         super().__init__(**kwargs)
 
@@ -200,11 +208,11 @@ class Settings_AppScreen(Screen):
         self.add_widget(self.back)
         self.add_widget(self.lbl)
     def leave_a(self, button):
-        self.man.swith_to_singup()
+        self.man.switch_to_singup()
+        self.man.RegistrationWindow.clear_textinput()
+        self.man.SingUpWindow.clear_textinput()
         with open("Email_login_password.txt", "w", encoding='utf-8') as f:
             f.truncate(0)
-
-
 
 
 
@@ -226,7 +234,7 @@ class Change_passwordScreen(Screen):
             hint_text="Старый пароль",
             icon_left="key-variant",
             color_active=(1, 1, 1, 1),
-            pos_hint={'center_x': 0.5, 'center_y': 0.46},
+            pos_hint={'center_x': 0.5, 'center_y': 0.5},
             normal_color=(120 / 255, 0, 120 / 255),
             line_color=(1, 0, 1, 1),
             size_hint=(0.45, 0.07),
@@ -237,7 +245,7 @@ class Change_passwordScreen(Screen):
             hint_text="Новый пароль",
             icon_left="key-variant",
             color_active=(1, 1, 1, 1),
-            pos_hint={'center_x': 0.5, 'center_y': 0.34},
+            pos_hint={'center_x': 0.5, 'center_y': 0.4},
             normal_color=(120 / 255, 0, 120 / 255),
             line_color=(1, 0, 1, 1),
             size_hint=(0.45, 0.07),
@@ -248,7 +256,7 @@ class Change_passwordScreen(Screen):
             text='Сменить',
             text_color=(1, 1, 1, 1),
             md_bg_color=(120 / 255, 0, 120 / 255),
-            pos_hint={'center_x': 0.5, 'center_y': 0.22},
+            pos_hint={'center_x': 0.5, 'center_y': 0.3},
             on_press=self.password_check,
             size_hint=(0.5, 0.07)
         )
@@ -271,18 +279,15 @@ class Change_passwordScreen(Screen):
 
     def password_check(self,button):
         with open("Email_login_password.txt", "r", encoding='utf-8') as f:
-            f.readlines()
-        if f[3].strip()!= self.textinputpasswordold:
+            f = f.readlines()
+        if f[3].strip() != self.textinputpasswordold.text:
             self.pop = Popup(title="Ошибка", content=PopWindow("Неверный старый пароль", "Продолжить", self.man),
                              size_hint=(None, None), size=(dp(400), dp(400)))
             self.pop.content.btn.bind(on_press=self.pop.dismiss)
             self.pop.open()
-
-
-    def change_password(self,button):
-        with open("Email_login_password.txt", "w", encoding='utf-8') as f:
-            f.truncate(0)
-
+        else:
+            self.man.db.change_password(f[0].strip(),self.textinputpassword.text)
+            change_current_info([f[0].strip(),f[1].strip(),self.textinputpassword.text,f[3].strip()])
 
 
 
@@ -293,6 +298,101 @@ class Change_passwordScreen(Screen):
 class StatisticScreen(Screen):
     def __init__(self, manager, **kwargs):
         super().__init__(**kwargs)
+        self.man=manager
+
+        self.add_widget( MDLabel(
+            text="Cтатистика слов",
+            font_style="H3",
+            halign="center",
+            pos_hint={'center_x': 0.5, 'center_y': 0.85},
+            theme_text_color="Custom",
+            text_color=(147 / 255, 7 / 255, 200 / 255)
+        ))
+
+        self.add_widget(MDFillRoundFlatButton(
+            text="Хорошо усвоенные",
+            md_bg_color=(120 / 255, 0, 120 / 255),
+            text_color=(1, 1, 1, 1),
+            size_hint=(0.5, 0.07),
+            pos_hint={'center_x': 0.5, 'center_y': 0.7},
+            on_press=self.man.switch_to_statistic_word,
+        ))
+
+        self.add_widget(MDFillRoundFlatButton(
+            text="Средне усвоенные",
+            md_bg_color=(120 / 255, 0, 120 / 255),
+            text_color=(1, 1, 1, 1),
+            size_hint=(0.5, 0.07),
+            pos_hint={'center_x': 0.5, 'center_y': 0.6},
+            on_press=self.man.switch_to_statistic_word,
+        ))
+
+        self.add_widget(MDFillRoundFlatButton(
+            text="Не усвоенные",
+            md_bg_color=(120 / 255, 0, 120 / 255),
+            text_color=(1, 1, 1, 1),
+            size_hint=(0.5, 0.07),
+            pos_hint={'center_x': 0.5, 'center_y': 0.5},
+            on_press=self.man.switch_to_statistic_word,
+        ))
+
+        self.add_widget(MDFillRoundFlatButton(
+            text="Назад",
+            md_bg_color=(120 / 255, 0, 120 / 255),
+            text_color=(1, 1, 1, 1),
+            size_hint=(0.5, 0.07),
+            pos_hint={'center_x': 0.5, 'center_y': 0.1},
+            on_press=self.man.switch_to_home_right,
+        ))
+
+class StatisticWordsScreen(Screen):
+    def __init__(self,manager,group_name, **kwargs):
+        super().__init__(**kwargs)
+        self.man=manager
+        self.add_widget(MDLabel(
+            text="Слова:",
+            font_style="H3",
+            halign="center",
+            pos_hint={'center_x': 0.5, 'center_y': 0.9},
+            theme_text_color="Custom",
+            text_color=(147 / 255, 7 / 255, 200 / 255)
+        ))
+
+        sv = ScrollView(
+            size_hint = (0.7,0.7),
+            pos_hint = {'center_x':0.5, 'center_y':0.5},
+            bar_color=(147 / 255, 7 / 255, 200 / 255)
+        )
+
+        ml = MDList()
+
+        self.words = self.list_words()
+        self.man.divide_into_groups()
+        for word_ind in self.man.word_groups[group_name]:
+            ml.add_widget(ThreeLineListItem(
+                text = self.words[word_ind],
+                secondary_text = f"Количество правильных: {self.man.answers_list['correct'][word_ind]}",
+                tertiary_text = f"Количество не правильных: {self.man.answers_list['wrong'][word_ind]}"
+            ))
+
+        self.add_widget(MDFillRoundFlatButton(
+            text="Назад",
+            md_bg_color=(120 / 255, 0, 120 / 255),
+            text_color=(1, 1, 1, 1),
+            size_hint=(0.5, 0.07),
+            pos_hint={'center_x': 0.5, 'center_y': 0.1},
+            on_press=self.man.switch_to_statistic,
+        ))
+
+        sv.add_widget(ml)
+        self.add_widget(sv)
+
+
+    def list_words(self):
+        with open("words.txt", "r", encoding='utf-8') as f:
+            words=[word.strip().lower() for word in f.readlines()]
+        return words
+
 
 
 class TheoryScreen(Screen):
@@ -329,6 +429,7 @@ class PracticeScreen(Screen):
             theme_text_color="Custom",
             text_color=(147 / 255, 7 / 255, 200 / 255)
         )
+
         self.add_widget(self.count_wrong_words_label)
         self.add_widget(self.count_right_words_label)
 
@@ -360,7 +461,11 @@ class PracticeScreen(Screen):
         self.new_word()
         self.add_word()
 
+
     def new_word(self):
+        self.count_right_words_label.pos_hint = {"center_x": 0.2 + 0.033*(len(self.count_right_words_label.text) - 1), 'center_y': 0.9}
+        self.count_wrong_words_label.pos_hint = {"center_x": 0.2 + 0.033*(len(self.count_wrong_words_label.text) - 1), 'center_y': 0.8}
+
         self.man.divide_into_groups()
 
         if self.man.word_groups['new']:
@@ -378,7 +483,7 @@ class PracticeScreen(Screen):
 
         self.accented = []
         for i in range(len(self.word)):
-            if self.word[i] in vowels:
+            if self.word[i] in VOWELS:
                 self.accented.append(i)
 
         self.word = self.word.upper()
@@ -403,7 +508,7 @@ class PracticeScreen(Screen):
                                    for letter in self.word]
 
         for i in range(len(self.list_letter_button)):
-            if self.list_letter_button[i].text in vowels:
+            if self.list_letter_button[i].text in VOWELS:
                 if self.accented.count(i) > 0:
                     self.list_letter_button[i].accented = True
                 else:
@@ -474,6 +579,8 @@ class TestScreen(Screen):
         super().__init__(**kwargs)
         self.man = manager
 
+        self.words_check_box = dict()
+
         self.add_widget(MDLabel(
             text="В одном из приведённых ниже слов допущена ошибка в постановке ударения: "
                  "НЕВЕРНО выделена буква, обозначающая ударный гласный звук. "
@@ -501,27 +608,94 @@ class TestScreen(Screen):
             text_color=(1, 1, 1, 1),
             size_hint=(0.3, 0.07),
             pos_hint={'center_x': 0.68, 'center_y': 0.15},
-            # on_press=,
+            on_press=self.check_answer,
         ))
 
-        answers = dict()
-        #{key: value}
-        random_word_ind = randint(0,317)
+    def words_generation(self):
         with open("words.txt", "r", encoding='utf-8') as f:
-            temp = f.readlines()[random_word_ind]
-        self.word = temp.strip()
+            words = f.readlines()
+        shuffle(words)
+        words = words[:5]
 
-        check_box_list = []
+        for i in range(len(words)):
+            words[i]=words[i].strip()
+
+        wrong_word_ind = randint(0,4)
+        ind_lower_vowels = []
+        for i in range (len(words[wrong_word_ind])):
+            if words[wrong_word_ind][i] in VOWELS.lower():
+                ind_lower_vowels.append(i)
+
+        rnd_ind = choice(ind_lower_vowels)
+        words[wrong_word_ind] = words[wrong_word_ind][:rnd_ind].lower() + words[wrong_word_ind][rnd_ind].upper() + words[wrong_word_ind][rnd_ind+1:].lower()
+
+        words_with_answer = dict()
+
+        for i in range(len(words)):
+            is_wrong = False
+            if i == wrong_word_ind:
+                is_wrong = True
+
+            words_with_answer[
+                MDLabel(
+                    text=words[i],
+                    font_style="H6",
+                    halign="center",
+                    pos_hint={'center_x': 0.53, 'center_y': i * 0.07 + 0.33},
+                    theme_text_color="Custom",
+                    text_color=(147 / 255, 7 / 255, 200 / 255),
+                    size_hint=(0.4, 1)
+                )
+            ] = is_wrong
+        return words_with_answer
+
+    def add_on_screen(self):
+        self.clean_screen()
+
+        self.words_check_box = dict()
+        self.words_with_answers = self.words_generation()
         for i in range(5):
-            check_box_list.append(
+            self.words_check_box[list(self.words_with_answers.keys())[i]] = \
                 MDCheckbox(
                     group='group',
-                    size_hint=(0.1, 0.1),
-                    pos_hint={'center_x': 0.32, 'center_y': i * 0.1 + 0.3})
-            )
-            self.add_widget(check_box_list[i])
+                    size_hint=(4, 0.07),
+                    pos_hint={'center_x': 0.32, 'center_y': i * 0.07 + 0.33}
+                )
+            self.words_check_box[list(self.words_with_answers.keys())[i]].selected_color = (147 / 255, 7 / 255, 200 / 255)
+            self.add_widget(list(self.words_with_answers.keys())[i])
+            self.add_widget(self.words_check_box[list(self.words_with_answers.keys())[i]])
 
+    def clean_screen(self):
+        for word, check_box in self.words_check_box.items():
+            self.remove_widget(word)
+            self.remove_widget(check_box)
 
+    def check_answer(self, button):
+        has_active = False
+        for check_box in self.words_check_box.values():
+            if check_box.active == True:
+                has_active = True
+        if has_active:
+            for word, check_box in self.words_check_box.items():
+                if self.words_with_answers[word]:
+                    word.text_color = (0, 200 / 255, 0, 1)
+                if not self.words_with_answers[word] and check_box.active == True:
+                    word.text_color = (200 / 255, 0, 0, 1)
+            Clock.schedule_once(self.man.switch_to_test, 1)  # Таймер
 
     def end_test(self, button):
-        self.man.switch_to_training_right()
+        has_active = False
+        for check_box in self.words_check_box.values():
+            if check_box.active== True:
+                has_active=True
+        if has_active:
+            for word, check_box in self.words_check_box.items():
+                if self.words_with_answers[word]:
+                    word.text_color = (0, 200 / 255, 0, 1)
+                if not self.words_with_answers[word] and check_box.active == True:
+                    word.text_color = (200 / 255, 0, 0, 1)
+            Clock.schedule_once(self.man.switch_to_training_right, 1)  # Таймер
+        else:
+            self.man.switch_to_training_right()
+
+
