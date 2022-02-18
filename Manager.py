@@ -16,6 +16,8 @@ from kivymd.uix.button import MDRectangleFlatButton, MDRoundFlatButton, MDRaised
 from kivymd.uix.label import MDLabel
 from kivymd.uix.textfield import MDTextFieldRound
 
+from kivy.core.window import Window
+
 from Regisration import *
 from Account import *
 
@@ -39,9 +41,12 @@ class AppManager(ScreenManager):
         self.RatingWindow = RatingScreen(self, name="Rating")
         self.PracticeWindow = PracticeScreen(self, name="Practice")
         self.TestWindow = TestScreen(self, name="Test")
-        self.About_AppWindow = About_AppScreen(self, name="About_App")
         self.SettingsWindow = Settings_AppScreen(self, name="Settings_App")
-        self.Change_passwordWindow = Change_passwordScreen(self,name="change_password")
+
+        self.Change_informationWindow =Change_information(self,name="change_information")
+        self.Change_passwordWindow = Change_passwordScreen(self, name="change_password")
+        self.Change_nameWindow = Change_NameScreen(self, name="change_name")
+        self.Change_mailWindow = Change_mailScreen(self, name="change_login")
 
         if not is_authorized:
             self.add_widget(self.SingUpWindow)
@@ -57,6 +62,10 @@ class AppManager(ScreenManager):
             self.add_widget(self.TestWindow)
             self.add_widget(self.SettingsWindow)
             self.add_widget(self.Change_passwordWindow)
+            self.add_widget(self.About_AppWindow)
+            self.add_widget(self.Change_informationWindow)
+            self.add_widget(self.Change_mailWindow)
+            self.add_widget(self.Change_nameWindow)
 
         else:
             self.add_widget(self.HomeWindow)
@@ -67,7 +76,11 @@ class AppManager(ScreenManager):
             self.add_widget(self.PracticeWindow)
             self.add_widget(self.TestWindow)
             self.add_widget(self.SettingsWindow)
+            self.add_widget(self.Change_informationWindow)
+            self.add_widget(self.Change_nameWindow)
+            self.add_widget(self.Change_mailWindow)
             self.add_widget(self.Change_passwordWindow)
+            self.add_widget(self.About_AppWindow)
 
             self.add_widget(self.SingUpWindow)
             self.add_widget(self.ForgotPasswordWindow)
@@ -111,6 +124,7 @@ class AppManager(ScreenManager):
         self.switch_to(self.HomeWindow, direction='right')
 
     def switch_to_training_left(self, button):
+        self.answers_list = self.db.take_answer()
         self.switch_to(self.TrainingWindow, direction='left')
 
     def switch_to_training_right(self, button=None):
@@ -121,6 +135,9 @@ class AppManager(ScreenManager):
 
     def switch_to_statistic(self, button):
         self.switch_to(self.StatisticWindow, direction='left')
+
+    def switch_to_statistic_right(self, button):
+        self.switch_to(self.StatisticWindow, direction='right')
 
     def switch_to_theory(self, button):
         self.switch_to(self.TheoryWindow, direction='left')
@@ -137,8 +154,32 @@ class AppManager(ScreenManager):
     def switch_to_settings(self, button):
         self.switch_to(self.SettingsWindow, direction='left')
 
+    def switch_to_settings_right(self, button):
+        self.switch_to(self.SettingsWindow, direction='right')
+
+    def switch_change_information(self,button):
+        self.switch_to(self.Change_informationWindow, direction='left')
+    def switch_change_information_rigth(self,button=None):
+        self.switch_to(self.Change_informationWindow, direction='right')
+
+    def switch_change_name(self,button):
+        self.switch_to(self.Change_nameWindow, direction='left')
+
     def switch_change_password(self,button):
         self.switch_to(self.Change_passwordWindow, direction='left')
+
+    def switch_change_mail(self,button):
+        self.switch_to(self.Change_mailWindow, direction='left')
+
+    def switch_about_app(self,button):
+        self.switch_to(self.About_AppWindow, direction='left')
+
+    def switch_rating(self, button):
+        self.PracticeWindow.give_answers_list()
+        self.db.give_answer(self.answers_list['correct'], self.answers_list['wrong'])
+        self.RatingWindow = RatingScreen(self, name="Rating")
+        self.switch_to(self.RatingWindow, direction='left')
+
 
     def switch_to_statistic_word(self, button):
 

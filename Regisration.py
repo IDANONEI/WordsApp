@@ -32,8 +32,6 @@ class SingUpScreen(Screen):
 
         self.man = manager
 
-
-
         self.lbl = MDLabel(
             text="СВЁКЛА",
             font_style="H3",
@@ -117,7 +115,7 @@ class SingUpScreen(Screen):
 
     def check_user(self, button):
         st = self.textinputlogin.text
-        st = st.lower()
+        st = st.strip()
         if self.man.db.check_not_existing_user(st):
             self.pop = Popup(
                 title="Ошибка",
@@ -130,6 +128,9 @@ class SingUpScreen(Screen):
 
         elif self.man.db.check_user(st, self.textinputpassword.text):
             change_current_info(self.man.db.user_info_l_or_e(self.textinputlogin.text))
+            # with open("answers_list_file.txt", "w", encoding='utf-8') as f:
+            #     f[0]=(self.cur.execute("""SELECT correct_answers FROM UserTable WHERE mail=?""", (,)).fetchone()+/n)
+            #     f[1]=(self.cur.execute("""SELECT correct_answers FROM UserTable WHERE mail=?""", (,)).fetchone())
             self.man.switch_to_home_left()
 
         else:
@@ -336,9 +337,9 @@ class RegistrationScreen(Screen):
 
     def check_reg(self, button):
         st_user = self.textinputlogin.text
-        st_user = st_user.lower()
+        st_user = st_user.strip()
         st_mail = self.textinputmail.text
-
+        #TODO чек имя
         if self.textinputpassword.text != self.textinputpasswordtoo.text or self.textinputpassword.text == "":
             self.pop = Popup(title="Ошибка", content=PopWindow("Неверный повтор пароля", "Продолжить", self.man),
                              size_hint=(None, None), size=(dp(400), dp(400)))

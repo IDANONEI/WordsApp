@@ -71,8 +71,8 @@ class DataBase:
     def user_reg(self, login, password, mail):
         users = self.cur.execute("""SELECT user_name FROM UserTable""").fetchall()
         id_new_user = len(users) + 1
-        self.cur.execute("""INSERT INTO UserTable VALUES (?, ?, ?, ?, ?, ?)""",
-                         (id_new_user, login, password, mail, ("0|" * NUM_WORDS)[:-1], ("0|" * NUM_WORDS)[:-1]))
+        self.cur.execute("""INSERT INTO UserTable VALUES (?, ?, ?, ?, ?, ?,?)""",
+                         (id_new_user, login, password, mail, ("0|" * NUM_WORDS)[:-1], ("0|" * NUM_WORDS)[:-1], 0))
         self.bd.commit()
 
     def user_info_id(self, id):
@@ -83,7 +83,7 @@ class DataBase:
             raise Exception("Пользователь не существует")
 
     def user_info_l_or_e(self, login):
-        login = login.lower()
+        login = login.strip()
         user = self.cur.execute("""SELECT * FROM UserTable WHERE user_name=?""", (login,)).fetchone()
         if not user is None:
             return user
@@ -104,15 +104,59 @@ class DataBase:
             info = f.readlines()
         if info:
             id = int(info[0].strip())
+            if sum(correct_answers)+sum(wrong_answers)>=100:
+                rating = round(sum(correct_answers)/(sum(correct_answers)+sum(wrong_answers)),2)
+            else:
+               rating = 0.0
             correct_answers = "|".join(list(map(str, correct_answers)))
             wrong_answers = "|".join(list(map(str, wrong_answers)))
-            self.cur.execute("""UPDATE UserTable SET correct_answers=? , wrong_answers=? WHERE UserID=?""",
-                             (correct_answers, wrong_answers, id,))
+
+
+            self.cur.execute("""UPDATE UserTable SET correct_answers=? , wrong_answers=?, rating=? WHERE UserID=?""",
+                             (correct_answers, wrong_answers, rating, id,))
             self.bd.commit()
+
     def change_password(self, id_user,password):
         self.cur.execute("""UPDATE UserTable SET user_password=? WHERE UserID=?""",
                          (password, int(id_user),))
         self.bd.commit()
+    def change_name(self, id_user,name):
+        self.cur.execute("""UPDATE UserTable SET user_name=? WHERE UserID=?""",
+                         (name, int(id_user),))
+        self.bd.commit()
+    def change_mail(self, id_user,mail):
+        self.cur.execute("""UPDATE UserTable SET mail=? WHERE UserID=?""",
+                         (mail, int(id_user),))
+        self.bd.commit()
 
+    def get_users_rating(self):
+        with open("Email_login_password.txt", "r", encoding='utf-8') as f:
+            cur_user=f.readlines()
+            if cur_user:
+                cur_user = cur_user[1].strip()
+            else:
+                cur_user = ""
+        cur_user_info = ("-","-","-")
+        users = self.cur.execute("""SELECT user_name, rating FROM UserTable""").fetchall()
+        sorted_info = sorted(users, key=lambda x: x[1], reverse=True)
+        res = []
+        for i in range(0,len(sorted_info)):
+            if sorted_info[i][0] == cur_user:
+                if sorted_info[i][1] == 0:
+                    cur_user_info = ("-",cur_user, "-")
+                else:
+                    if  i != 0 and res[-1][2] == sorted_info[i][1] :
+                        cur_user_info = (res[-1][0], sorted_info[i][0], sorted_info[i][1])
+                    else:
+                        cur_user_info = (i+1, sorted_info[i][0], sorted_info[i][1])
+            if sorted_info[i][1] == 0:
+                continue
+            if i == 0:
+                res.append([1,sorted_info[0][0], sorted_info[0][1]])
+                continue
+            if res[i-1][2] == sorted_info[i][1]:
+                res.append([res[-1][0], sorted_info[i][0], sorted_info[i][1]])
+            else:
+                res.append([i+1, sorted_info[i][0], sorted_info[i][1]])
+        return cur_user_info, res
 
-new_db = DataBase()
