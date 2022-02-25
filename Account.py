@@ -19,6 +19,7 @@ from kivymd.uix.datatables import MDDataTable
 from kivymd.uix.list import MDList, ThreeLineListItem
 from kivy.core.window import Window
 
+import time
 
 from Regisration import change_current_info
 
@@ -31,7 +32,7 @@ from kivymd.uix.gridlayout import MDGridLayout
 from kivymd.uix.label import MDLabel, MDIcon
 from kivymd.uix.selectioncontrol import MDCheckbox
 from kivymd.uix.textfield import MDTextFieldRound
-
+import webbrowser
 
 import Regisration
 from Constans import VOWELS
@@ -64,20 +65,11 @@ class HomeScreen(Screen):
             size_hint=(0.5, 0.07)
         )
 
-        self.add_widget(MDFillRoundFlatButton(
-            text='Теория',
-            text_color=(1, 1, 1, 1),
-            md_bg_color=(120 / 255, 0, 120 / 255),
-            pos_hint={'center_x': 0.5, 'center_y': 0.6},
-            on_press=manager.switch_to_theory,
-            size_hint=(0.5, 0.07)
-        ))
-
         self.statistics_btn = MDFillRoundFlatButton(
             text='Статистика',
             text_color=(1, 1, 1, 1),
             md_bg_color=(120 / 255, 0, 120 / 255),
-            pos_hint={'center_x': 0.5, 'center_y': 0.5},
+            pos_hint={'center_x': 0.5, 'center_y': 0.6},
             on_press=self.man.switch_to_statistic,
             size_hint=(0.5, 0.07)
         )
@@ -86,7 +78,7 @@ class HomeScreen(Screen):
             text='Рейтинг',
             text_color=(1, 1, 1, 1),
             md_bg_color=(120 / 255, 0, 120 / 255),
-            pos_hint={'center_x': 0.5, 'center_y': 0.4},
+            pos_hint={'center_x': 0.5, 'center_y': 0.5},
             on_press=manager.switch_rating,
             size_hint=(0.5, 0.07)
         )
@@ -161,6 +153,45 @@ class About_AppScreen(Screen):
     def __init__(self, manager, **kwargs):
         super().__init__(**kwargs)
 
+        self.add_widget(MDLabel(
+            text="О приложении:",
+            font_style="H3",
+            halign="center",
+            pos_hint={'center_x': 0.5, 'center_y': 0.85},
+            theme_text_color="Custom",
+            text_color=(147 / 255, 7 / 255, 200 / 255)
+        ))
+
+        self.add_widget(MDFillRoundFlatButton(
+            text="Разработчик: Маскин Даниил",
+            md_bg_color=(120 / 255, 0, 120 / 255),
+            text_color=(1, 1, 1, 1),
+            size_hint=(0.5, 0.07),
+            on_press=self.developer_vk,
+            pos_hint={'center_x': 0.5, 'center_y': 0.7}, ))
+
+        self.add_widget(MDFillRoundFlatButton(
+            text="Написать о баге",
+            md_bg_color=(120 / 255, 0, 120 / 255),
+            text_color=(1, 1, 1, 1),
+            size_hint=(0.5, 0.07),
+            on_press=self.developer_tel,
+            pos_hint={'center_x': 0.5, 'center_y': 0.6}, ))
+
+        self.add_widget(MDFillRoundFlatButton(
+            text="Оценить",
+            md_bg_color=(120 / 255, 0, 120 / 255),
+            text_color=(1, 1, 1, 1),
+            size_hint=(0.5, 0.07),
+            # on_press=self.developer_app,
+            pos_hint={'center_x': 0.5, 'center_y': 0.4}, ))
+        self.add_widget(MDFillRoundFlatButton(
+            text="Как работает",
+            md_bg_color=(120 / 255, 0, 120 / 255),
+            text_color=(1, 1, 1, 1),
+            size_hint=(0.5, 0.07),
+            on_press=manager.swich_works_wordWindow,
+            pos_hint={'center_x': 0.5, 'center_y': 0.5}, ))
 
         self.add_widget(MDFillRoundFlatButton(
             text='Назад',
@@ -170,6 +201,30 @@ class About_AppScreen(Screen):
             on_press=manager.switch_to_settings_right,
             size_hint=(0.5, 0.07)
         ))
+    def developer_vk(self,button):
+        webbrowser.open_new("https://vk.com/daniil.maskin")
+    def developer_tel(self):
+        webbrowser.open_new("https://t.me/Daniil_inf")
+    def developer_app(self):
+        webbrowser.open_new("")
+
+
+
+class Works_wordScrean(Screen):
+    def __init__(self, manager, **kwargs):
+        super().__init__(**kwargs)
+        self.man = manager
+
+
+        self.add_widget(MDFillRoundFlatButton(
+            text='Назад',
+            text_color=(1, 1, 1, 1),
+            md_bg_color=(120 / 255, 0, 120 / 255),
+            pos_hint={'center_x': 0.5, 'center_y': 0.2},
+            on_press=manager.switch_about_app_rigth,
+            size_hint=(0.5, 0.07)
+        ))
+
 
 
 class Settings_AppScreen(Screen):
@@ -193,7 +248,9 @@ class Settings_AppScreen(Screen):
             text_color=(1, 1, 1, 1),
             size_hint=(0.5, 0.07),
             on_press=self.leave_a,
-            pos_hint={'center_x': 0.5, 'center_y': 0.6}, )
+            pos_hint={'center_x': 0.5, 'center_y': 0.6},
+        #TODO При выходе сохраняются данные
+            )
 
         self.add_widget(MDFillRoundFlatButton(
             text="Изменить данные",
@@ -220,8 +277,6 @@ class Settings_AppScreen(Screen):
             pos_hint={'center_x': 0.5, 'center_y': 0.2},
             on_press=manager.switch_to_home_right,
         )
-
-
 
         self.add_widget(self.list_letter_button)
         self.add_widget(self.back)
@@ -342,6 +397,16 @@ class Change_NameScreen(Screen):
             f = f.readlines()
         if f[2].strip() != self.textinputpassword.text:
             self.pop = Popup(title="Ошибка", content=PopWindow("Неверный пароль", "Продолжить", self.man),
+                             size_hint=(None, None), size=(dp(400), dp(400)))
+            self.pop.content.btn.bind(on_press=self.pop.dismiss)
+            self.pop.open()
+        elif self.man.db.check_bad_name(self.textinputname.text):
+            self.pop = Popup(title="Ошибка", content=PopWindow("Такой логин занят", "Продолжить", self.man),
+                             size_hint=(None, None), size=(dp(400), dp(400)))
+            self.pop.content.btn.bind(on_press=self.pop.dismiss)
+            self.pop.open()
+        elif not self.man.db.check_not_existing_user(self.textinputname.text):
+            self.pop = Popup(title="Ошибка", content=PopWindow("Такой логин занят", "Продолжить", self.man),
                              size_hint=(None, None), size=(dp(400), dp(400)))
             self.pop.content.btn.bind(on_press=self.pop.dismiss)
             self.pop.open()
@@ -505,8 +570,6 @@ class Change_mailScreen(Screen):
 
 
 
-
-
 class StatisticScreen(Screen):
     def __init__(self, manager, **kwargs):
         super().__init__(**kwargs)
@@ -615,64 +678,27 @@ class StatisticWordsScreen(Screen):
         return words
 
 
-
-class TheoryScreen(Screen):
-    def __init__(self, manager, **kwargs):
-        super().__init__(**kwargs)
-
-
-
-        self.back = MDFillRoundFlatButton(
-            text="Назад",
-            md_bg_color=(120 / 255, 0, 120 / 255),
-            text_color=(1, 1, 1, 1),
-            size_hint=(0.5, 0.07),
-            pos_hint={'center_x': 0.5, 'center_y': 0.2},
-            on_press=manager.switch_to_home_right,
-        )
-
-
 class RatingScreen(Screen):
     def __init__(self, manager, **kwargs):
         super().__init__(**kwargs)
-        cur_user, rates = manager.db.get_users_rating()
-        dataTable = MDDataTable(
+        self.man = manager
+        self.new_screen = Screen()
+        self.dataTable = MDDataTable(
+
             column_data = [
                 ('[color=#C042B8][size=24]№[/size][/color]', dp((Window.size[0]/530))*20),
                 ("[color=#C042B8][size=24]Имя пользователя[/size][/color]", dp((Window.size[0]/530))*60),
-                ("[color=#C042B8][size=24]?[/size][/color]",dp((Window.size[0]/530))*20),
+                ("[color=#C042B8][size=24]√/(√+x)[/size][/color]",dp((Window.size[0]/530))*20),
 
             ],
-            row_data = [
-                # (
-                #     f"[color=#C042B8]{i}[/color]",
-                #     f"[color=#C042B8]{name}[/color]",
-                #     f"[color=#C042B8]{rates}[/color]",
-                # ) for i,name,rates in rates if rates != 0
-                (
-                        f"[size=20][color=#C042B8]{cur_user[0]}[/size][/color]",
-                        f"[size=20][color=#C042B8]{cur_user[1]} (Я)[/size][/color]",
-                        f"[size=20][color=#C042B8]{cur_user[2]}[/size][/color]"
-                ) for i in range(10)
-            ]
+            rows_num = 100,
+
         )
-        # for i,name,rates in rates:
-        #     if rates != 0:
-        #         dataTable.row_data.append((
-        #             f"[color=#C042B8]{i}[/color]",
-        #             f"[color=#C042B8]{name}[/color]",
-        #             f"[color=#C042B8]{rates}[/color]",
-        #         ))
-        # for i in range(10):
-        #     dataTable.row_data.append((
-        #         f"[color=#C042B8]{i+1}[/color]",
-        #         f"[color=#C042B8]aaaa[/color]",
-        #         f"[color=#C042B8]bbbb[/color]",
-        #     ))
-        # dataTable.row_data.append(("","",""))
-        # dataTable.row_data.append(("", "", ""))
-        # dataTable.rows_num=50
-        self.add_widget(dataTable)
+
+        self.new_screen.add_widget(self.dataTable)
+        self.add_widget(self.new_screen)
+        print(self.dataTable.row_data)
+
         self.add_widget(MDFillRoundFlatButton(
             text="Назад",
             md_bg_color=(120 / 255, 0, 120 / 255),
@@ -682,6 +708,29 @@ class RatingScreen(Screen):
             on_press=manager.switch_to_home_right,
         ))
 
+        print("MDDataTable")
+
+    def fillTable(self):
+        start = time.time()
+        cur_user, rates = self.man.db.get_users_rating()
+
+        temp = [
+            (
+                f"[color=#C042B8]{i}[/color]",
+                f"[color=#C042B8]{name}[/color]",
+                f"[color=#C042B8]{rates}[/color]",
+            ) for i, name, rates in rates if rates != 0
+
+        ]
+
+        self.dataTable.row_data = [
+              (
+                  f"[color=#C042B8][size=20]{cur_user[0]}[/size][/color]",
+                  f"[color=#C042B8][size=20]{cur_user[1]}(Я)[/size][/color]",
+                  f"[color=#C042B8][size=20]{cur_user[2]}[/size][/color]",
+              ) ]+temp.copy()
+        finish = time.time()
+        print(finish-start)
 
 class PracticeScreen(Screen):
     def __init__(self, manager, **kwargs):

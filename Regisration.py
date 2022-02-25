@@ -128,9 +128,10 @@ class SingUpScreen(Screen):
 
         elif self.man.db.check_user(st, self.textinputpassword.text):
             change_current_info(self.man.db.user_info_l_or_e(self.textinputlogin.text))
-            # with open("answers_list_file.txt", "w", encoding='utf-8') as f:
-            #     f[0]=(self.cur.execute("""SELECT correct_answers FROM UserTable WHERE mail=?""", (,)).fetchone()+/n)
-            #     f[1]=(self.cur.execute("""SELECT correct_answers FROM UserTable WHERE mail=?""", (,)).fetchone())
+            with open("Email_login_password.txt", "r", encoding='utf-8') as f:
+                info = f.readlines()
+            self.man.db.take_answers_db(int(info[0].strip()))
+            self.man.answers_list = self.man.db.take_answer()
             self.man.switch_to_home_left()
 
         else:
@@ -339,7 +340,6 @@ class RegistrationScreen(Screen):
         st_user = self.textinputlogin.text
         st_user = st_user.strip()
         st_mail = self.textinputmail.text
-        #TODO чек имя
         if self.textinputpassword.text != self.textinputpasswordtoo.text or self.textinputpassword.text == "":
             self.pop = Popup(title="Ошибка", content=PopWindow("Неверный повтор пароля", "Продолжить", self.man),
                              size_hint=(None, None), size=(dp(400), dp(400)))
@@ -364,6 +364,11 @@ class RegistrationScreen(Screen):
                              size_hint=(None, None), size=(dp(400), dp(400)))
             self.pop.content.btn.bind(on_press=self.pop.dismiss)
             self.pop.open()
+        elif self.man.db.check_bad_name(self.textinputlogin.text):
+            self.pop = Popup(title="Ошибка", content=PopWindow("Такой логин занят", "Продолжить", self.man),
+                             size_hint=(None, None), size=(dp(400), dp(400)))
+            self.pop.content.btn.bind(on_press=self.pop.dismiss)
+            self.pop.open()
 
         elif self.man.db.check_not_existing_user(st_user):
             self.man.db.user_reg(st_user, self.textinputpassword.text, self.textinputmail.text)
@@ -371,6 +376,8 @@ class RegistrationScreen(Screen):
             with open("answers_list_file.txt", "w", encoding='utf-8') as f:
                 f.write(("0|" * NUM_WORDS)[:-1] + "\n")
                 f.write(("0|" * NUM_WORDS)[:-1])
+            #self.manager.answers_list()
+            self.man.answers_list = self.man.db.take_answer()
             self.man.switch_to_home_left()
         else:
             self.pop = Popup(title="Ошибка", content=PopWindow("Такой логин занят", "Продолжить", self.man),

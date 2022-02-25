@@ -17,7 +17,7 @@ from kivymd.uix.label import MDLabel
 from kivymd.uix.textfield import MDTextFieldRound
 
 from kivy.core.window import Window
-
+import time
 from Regisration import *
 from Account import *
 
@@ -37,7 +37,6 @@ class AppManager(ScreenManager):
         self.TrainingWindow = TrainingScreen(self, name="Training")
         self.About_AppWindow = About_AppScreen(self, name="About_App")
         self.StatisticWindow = StatisticScreen(self, name="Statistic")
-        self.TheoryWindow = TheoryScreen(self, name="Theory")
         self.RatingWindow = RatingScreen(self, name="Rating")
         self.PracticeWindow = PracticeScreen(self, name="Practice")
         self.TestWindow = TestScreen(self, name="Test")
@@ -48,6 +47,9 @@ class AppManager(ScreenManager):
         self.Change_nameWindow = Change_NameScreen(self, name="change_name")
         self.Change_mailWindow = Change_mailScreen(self, name="change_login")
 
+        self.Works_wordWindow = Works_wordScrean(self,name="works_w")
+
+
         if not is_authorized:
             self.add_widget(self.SingUpWindow)
             self.add_widget(self.ForgotPasswordWindow)
@@ -56,7 +58,6 @@ class AppManager(ScreenManager):
             self.add_widget(self.HomeWindow)
             self.add_widget(self.TrainingWindow)
             self.add_widget(self.StatisticWindow)
-            self.add_widget(self.TheoryWindow)
             self.add_widget(self.RatingWindow)
             self.add_widget(self.PracticeWindow)
             self.add_widget(self.TestWindow)
@@ -71,7 +72,6 @@ class AppManager(ScreenManager):
             self.add_widget(self.HomeWindow)
             self.add_widget(self.TrainingWindow)
             self.add_widget(self.StatisticWindow)
-            self.add_widget(self.TheoryWindow)
             self.add_widget(self.RatingWindow)
             self.add_widget(self.PracticeWindow)
             self.add_widget(self.TestWindow)
@@ -89,6 +89,7 @@ class AppManager(ScreenManager):
     def __del__(self):
         print("Вызвался деструктор")
         self.PracticeWindow.give_answers_list()
+        #self.db.take_answer()
         self.db.give_answer(self.answers_list['correct'], self.answers_list['wrong'])
 
     def divide_into_groups(self):
@@ -139,8 +140,6 @@ class AppManager(ScreenManager):
     def switch_to_statistic_right(self, button):
         self.switch_to(self.StatisticWindow, direction='right')
 
-    def switch_to_theory(self, button):
-        self.switch_to(self.TheoryWindow, direction='left')
 
     def switch_to_practice(self, button):
         self.PracticeWindow = PracticeScreen(self, name="Practice")
@@ -174,12 +173,19 @@ class AppManager(ScreenManager):
     def switch_about_app(self,button):
         self.switch_to(self.About_AppWindow, direction='left')
 
+    def swich_works_wordWindow(self,button):
+        self.switch_to(self.Works_wordWindow,direction='left')
+
+    def switch_about_app_rigth(self, button):
+        self.switch_to(self.About_AppWindow, direction='right')
+
     def switch_rating(self, button):
+
         self.PracticeWindow.give_answers_list()
         self.db.give_answer(self.answers_list['correct'], self.answers_list['wrong'])
-        self.RatingWindow = RatingScreen(self, name="Rating")
-        self.switch_to(self.RatingWindow, direction='left')
 
+        self.RatingWindow.fillTable()
+        self.switch_to(self.RatingWindow, direction='left')
 
     def switch_to_statistic_word(self, button):
 
@@ -199,6 +205,9 @@ class AppManager(ScreenManager):
             instance.icon_left_color = (147 / 255, 7 / 255, 200 / 255)
         else:
             instance.icon_left_color = (1, 1, 1, 1)
+
+    def answers_list (self):
+        self.answers_list = self.db.take_answer()
 
 
 class ManagerApp(MDApp):
