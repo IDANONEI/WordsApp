@@ -1,4 +1,5 @@
 import sqlite3
+import pymysql
 from random import shuffle
 
 from Constans import NUM_WORDS
@@ -7,90 +8,78 @@ from Constans import NUM_WORDS
 class DataBase:
 
     def __init__(self):
-        self.bd = sqlite3.connect("Test1")
-        self.cur = self.bd.cursor()
+        self.connection()
         # self.cur.execute("""DELETE FROM WordsTable""")
         # self.fill_words_bd()
 
-    # def fill_words_bd(self):
-    #     file = open('words.txt', encoding='utf-8').readlines()
-    #     for i, line in enumerate(file):
-    #         line = line.strip()
-    #         self.cur.execute("""INSERT INTO WordsTable VALUES (?, ?, ?, ?)""", (i + 1, line, 0, 0))
-    #         self.bd.commit()
-    #
-    # def choose_words(self):
-    #     list_words = self.cur.execute("""SELECT words FROM WordsTable""").fetchall()
-    #     list_words_update = []
-    #     for word_tuple in list_words:
-    #         list_words_update.append(word_tuple[0])
-    #     shuffle(list_words_update)
-    #     return list_words_update
-    #
-    # def update_read(self, word, is_true_read):
-    #     if is_true_read:
-    #         true_read_bd = self.cur.execute("""SELECT true_read FROM WordsTable WHERE words=?""", (word,)).fetchone()[0]
-    #         self.cur.execute("""UPDATE WordsTable SET true_read=? WHERE words=?""", (true_read_bd + 1, word,))
-    #         self.bd.commit()
-    #     if is_true_read == False:
-    #         false_read_bd = self.cur.execute("""SELECT false_read FROM WordsTable WHERE words=?""", (word,)).fetchone()[
-    #             0]
-    #         self.cur.execute("""UPDATE WordsTable SET false_read=? WHERE words=?""", (false_read_bd + 1, word,))
-    #         self.bd.commit()
+    def connection(self):
+        self.bd = pymysql.connect(
+            host="maskinhz.beget.tech",
+            user="maskinhz_appword",
+            password="Qwerty123",
+            database="maskinhz_appword")
+        self.cur = self.bd.cursor()
 
     def check_user(self, login, password):
-        users = self.cur.execute("""SELECT UserID FROM UserTable WHERE user_name=?""", (login,)).fetchone()
+        self.connection()
+        self.cur.execute("""SELECT UserID FROM UserTable WHERE user_name=%s""", (login,))
+        users = self.cur.fetchone()
         if not users is None:
-            users = self.cur.execute("""SELECT user_password FROM UserTable WHERE user_name=?""", (login,)).fetchone()[
-                0]
+            self.cur.execute("""SELECT user_password FROM UserTable WHERE user_name=%s""", (login,))
+            users = self.cur.fetchone()[0]
             if not users is None:
                 if str(password) == str(users):
                     return True
         else:
-            mail = self.cur.execute("""SELECT UserID FROM UserTable WHERE mail=?""", (login,)).fetchone()
+            self.cur.execute("""SELECT UserID FROM UserTable WHERE mail=%s""", (login,))
+            mail = self.cur.fetchone()
             if not mail is None:
-                users = self.cur.execute("""SELECT user_password FROM UserTable WHERE mail=?""", (login,)).fetchone()[0]
+                self.cur.execute("""SELECT user_password FROM UserTable WHERE mail=%s""", (login,))
+                users = self.cur.fetchone()[0]
                 if not users is None:
                     if str(password) == str(users):
                         return True
         return False
 
     def check_not_existing_user(self, u):
-        users = self.cur.execute("""SELECT UserID FROM UserTable WHERE user_name=?""", (u,)).fetchone()
-        if users is None:
-            users = self.cur.execute("""SELECT UserID FROM UserTable WHERE mail=?""", (u,)).fetchone()
-            if users is None:
+        self.connection()
+        users = self.cur.execute("""SELECT UserID FROM UserTable WHERE user_name=%s""", (u,))
+        if not users:
+            users = self.cur.execute("""SELECT UserID FROM UserTable WHERE mail=%s""", (u,))
+            if not users is None:
                 return True
         return False
 
     def check_mail(self, m):
-        mail = self.cur.execute("""SELECT UserID FROM UserTable WHERE mail=?""", (m,)).fetchone()
-        if mail is None:
+        self.connection()
+        mail = self.cur.execute("""SELECT UserID FROM UserTable WHERE mail=%s""", (m,))
+        if not mail:
             return False
         return True
 
     def user_reg(self, login, password, mail):
-        users = self.cur.execute("""SELECT user_name FROM UserTable""").fetchall()
-        id_new_user = len(users) + 1
-        self.cur.execute("""INSERT INTO UserTable VALUES (?, ?, ?, ?, ?, ?,?)""",
-                         (id_new_user, login, password, mail, ("0|" * NUM_WORDS)[:-1], ("0|" * NUM_WORDS)[:-1], 0))
+        self.connection()
+        self.cur.execute("""INSERT INTO UserTable (user_name, user_password, mail, correct_answers, wrong_answers, rating) VALUES (%s, %s, %s, %s, %s, %s)""",
+                         (login, password, mail, ("0|" * NUM_WORDS)[:-1], ("0|" * NUM_WORDS)[:-1], 0))
         self.bd.commit()
 
     def user_info_id(self, id):
-        user = self.cur.execute("""SELECT * FROM UserTable WHERE UserID=?""", (id,)).fetchone()
+        self.connection()
+        self.cur.execute("""SELECT * FROM UserTable WHERE UserID=%s""", (id,))
+        user =self.cur.fetchone()
         if not user is None:
             return user
         else:
             raise Exception("Пользователь не существует")
 
     def user_info_l_or_e(self, login):
+        self.connection()
         login = login.strip()
-        user = self.cur.execute("""SELECT * FROM UserTable WHERE user_name=?""", (login,)).fetchone()
-        if not user is None:
-            return user
-        else:
-            user = self.cur.execute("""SELECT * FROM UserTable WHERE mail=?""", (login,)).fetchone()
-            return user
+        self.cur.execute("SELECT * FROM UserTable")
+        users = self.cur.fetchall()
+        for user in users:
+            if user[1] == login or user[3] == login:
+                return user
 
     def take_answer(self):
         with open("answers_list_file.txt", "r", encoding='utf-8') as f:
@@ -104,6 +93,7 @@ class DataBase:
         return answers
 
     def give_answer(self, correct_answers, wrong_answers):
+        self.connection()
         with open("Email_login_password.txt", "r", encoding='utf-8') as f:
             info = f.readlines()
         if info:
@@ -115,33 +105,39 @@ class DataBase:
             correct_answers = "|".join(list(map(str, correct_answers)))
             wrong_answers = "|".join(list(map(str, wrong_answers)))
 
-            self.cur.execute("""UPDATE UserTable SET correct_answers=? , wrong_answers=?, rating=? WHERE UserID=?""",
+            self.cur.execute("""UPDATE UserTable SET correct_answers=%s , wrong_answers=%s, rating=%s WHERE UserID=%s""",
                              (correct_answers, wrong_answers, rating, id,))
             self.bd.commit()
 
     def take_answers_db(self, id):
-        temp = self.cur.execute("""SELECT correct_answers,wrong_answers FROM UserTable WHERE UserID=?""",
-                                (id,)).fetchone()
+        self.connection()
+        self.cur.execute("""SELECT correct_answers,wrong_answers FROM UserTable WHERE UserID=%s""", (id,))
+
+        temp = self.cur.fetchone()
         with open("answers_list_file.txt", "w", encoding='utf-8') as f:
             f.write(temp[0] + "\n")
             f.write(temp[1] + "\n")
 
     def change_password(self, id_user, password):
-        self.cur.execute("""UPDATE UserTable SET user_password=? WHERE UserID=?""",
+        self.connection()
+        self.cur.execute("""UPDATE UserTable SET user_password=%s WHERE UserID=%s""",
                          (password, int(id_user),))
         self.bd.commit()
 
     def change_name(self, id_user, name):
-        self.cur.execute("""UPDATE UserTable SET user_name=? WHERE UserID=?""",
+        self.connection()
+        self.cur.execute("""UPDATE UserTable SET user_name=%s WHERE UserID=%s""",
                          (name, int(id_user),))
         self.bd.commit()
 
     def change_mail(self, id_user, mail):
-        self.cur.execute("""UPDATE UserTable SET mail=? WHERE UserID=?""",
+        self.connection()
+        self.cur.execute("""UPDATE UserTable SET mail=%s WHERE UserID=%s""",
                          (mail, int(id_user),))
         self.bd.commit()
 
     def get_users_rating(self):
+        self.connection()
         with open("Email_login_password.txt", "r", encoding='utf-8') as f:
             cur_user = f.readlines()
             if cur_user:
@@ -149,7 +145,8 @@ class DataBase:
             else:
                 cur_user = ""
         cur_user_info = ("-", "-", "-")
-        users = self.cur.execute("""SELECT user_name, rating FROM UserTable""").fetchall()
+        self.cur.execute("""SELECT user_name, rating FROM UserTable""")
+        users =self.cur.fetchall()
         sorted_info = sorted(users, key=lambda x: x[1], reverse=True)
         res = []
         for i in range(0, len(sorted_info)):
@@ -173,6 +170,7 @@ class DataBase:
         return cur_user_info, res
 
     def check_bad_name(self, name):
+        self.connection()
         with open("bed_words.txt", "r", encoding='utf-8') as f:
             words = [word.strip().lower() for word in f.readlines()]
 

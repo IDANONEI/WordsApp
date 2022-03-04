@@ -371,6 +371,7 @@ class RegistrationScreen(Screen):
             self.pop.open()
 
         elif self.man.db.check_not_existing_user(st_user):
+            #TODO конект при регистрации
             self.man.db.user_reg(st_user, self.textinputpassword.text, self.textinputmail.text)
             change_current_info(self.man.db.user_info_l_or_e(self.textinputlogin.text))
             with open("answers_list_file.txt", "w", encoding='utf-8') as f:

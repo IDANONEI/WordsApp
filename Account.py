@@ -203,9 +203,9 @@ class About_AppScreen(Screen):
         ))
     def developer_vk(self,button):
         webbrowser.open_new("https://vk.com/daniil.maskin")
-    def developer_tel(self):
+    def developer_tel(self,button):
         webbrowser.open_new("https://t.me/Daniil_inf")
-    def developer_app(self):
+    def developer_app(self,button):
         webbrowser.open_new("")
 
 
@@ -249,7 +249,6 @@ class Settings_AppScreen(Screen):
             size_hint=(0.5, 0.07),
             on_press=self.leave_a,
             pos_hint={'center_x': 0.5, 'center_y': 0.6},
-        #TODO При выходе сохраняются данные
             )
 
         self.add_widget(MDFillRoundFlatButton(
@@ -954,7 +953,7 @@ class TestScreen(Screen):
         wrong_word_ind = randint(0,4)
         ind_lower_vowels = []
         for i in range (len(words[wrong_word_ind])):
-            if words[wrong_word_ind][i] in VOWELS.upper():
+            if words[wrong_word_ind][i] in VOWELS.lower():
                 ind_lower_vowels.append(i)
 
         rnd_ind = choice(ind_lower_vowels)
