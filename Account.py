@@ -1,20 +1,8 @@
-from kivy.app import App
-from kivy.app import App
+
 from kivy.clock import Clock
-from kivy.core.window import Window
 from kivy.metrics import dp
-from kivy.uix.button import Button
-from kivy.uix.checkbox import CheckBox
-from kivy.uix.gridlayout import GridLayout
-from kivy.uix.label import Label
-from kivy.uix.screenmanager import ScreenManager, Screen
-from kivy.uix.boxlayout import BoxLayout
-from kivy.uix.anchorlayout import AnchorLayout
 from kivy.uix.scrollview import ScrollView
-from kivy.uix.textinput import TextInput
 from kivy.uix.popup import Popup
-from kivy.uix.floatlayout import FloatLayout
-from kivy.utils import get_color_from_hex
 from kivymd.uix.datatables import MDDataTable
 from kivymd.uix.list import MDList, ThreeLineListItem
 from kivy.core.window import Window
@@ -26,10 +14,8 @@ from Regisration import change_current_info
 from random import randint, choice, shuffle
 from kivy.uix.screenmanager import Screen
 from kivymd.app import MDApp
-from kivymd.uix.button import MDRectangleFlatButton, MDRoundFlatButton, MDRaisedButton, MDFillRoundFlatButton, \
-    MDIconButton, MDFloatingActionButton
-from kivymd.uix.gridlayout import MDGridLayout
-from kivymd.uix.label import MDLabel, MDIcon
+from kivymd.uix.button import MDFillRoundFlatButton, MDIconButton
+from kivymd.uix.label import MDLabel
 from kivymd.uix.selectioncontrol import MDCheckbox
 from kivymd.uix.textfield import MDTextFieldRound
 import webbrowser
@@ -49,17 +35,17 @@ class HomeScreen(Screen):
 
         self.lbl = MDLabel(
             text="СВЁКЛА",
-            font_style="H3",
+            font_style="H6",
             halign="center",
             pos_hint={'center_x': 0.5, 'center_y': 0.85},
             theme_text_color="Custom",
-            text_color=(147 / 255, 7 / 255, 200 / 255)
+            text_color=(100 / 255, 0 / 255, 100 / 255)
         )
-
+        self.lbl.font_size = 60
         self.training_btn = MDFillRoundFlatButton(
             text='Тренировка',
             text_color=(1, 1, 1, 1),
-            md_bg_color=(120 / 255, 0, 120 / 255),
+            md_bg_color=(100 / 255, 0, 100 / 255),
             pos_hint={'center_x': 0.5, 'center_y': 0.7},
             on_press=self.man.switch_to_training_left,
             size_hint=(0.5, 0.07)
@@ -68,7 +54,7 @@ class HomeScreen(Screen):
         self.statistics_btn = MDFillRoundFlatButton(
             text='Статистика',
             text_color=(1, 1, 1, 1),
-            md_bg_color=(120 / 255, 0, 120 / 255),
+            md_bg_color=(100 / 255, 0, 100 / 255),
             pos_hint={'center_x': 0.5, 'center_y': 0.6},
             on_press=self.man.switch_to_statistic,
             size_hint=(0.5, 0.07)
@@ -77,7 +63,7 @@ class HomeScreen(Screen):
         self.rating_btn = MDFillRoundFlatButton(
             text='Рейтинг',
             text_color=(1, 1, 1, 1),
-            md_bg_color=(120 / 255, 0, 120 / 255),
+            md_bg_color=(100 / 255, 0, 100 / 255),
             pos_hint={'center_x': 0.5, 'center_y': 0.5},
             on_press=manager.switch_rating,
             size_hint=(0.5, 0.07)
@@ -86,7 +72,7 @@ class HomeScreen(Screen):
         self.settings_button = MDIconButton(
             icon="cog-outline",
             theme_text_color="Custom",
-            text_color=(120 / 255, 0, 120 / 255, 1),
+            text_color=(100 / 255, 0, 100 / 255, 1),
             pos_hint={'center_x': 0.9, 'center_y': 0.9},
             user_font_size="40sp",
             on_press=manager.switch_to_settings
@@ -153,14 +139,16 @@ class About_AppScreen(Screen):
     def __init__(self, manager, **kwargs):
         super().__init__(**kwargs)
 
-        self.add_widget(MDLabel(
+        self.lbl=MDLabel(
             text="О приложении:",
             font_style="H3",
             halign="center",
             pos_hint={'center_x': 0.5, 'center_y': 0.85},
             theme_text_color="Custom",
             text_color=(147 / 255, 7 / 255, 200 / 255)
-        ))
+        )
+
+        self.lbl.font_size = 65
 
         self.add_widget(MDFillRoundFlatButton(
             text="Разработчик: Маскин Даниил",
@@ -201,6 +189,7 @@ class About_AppScreen(Screen):
             on_press=manager.switch_to_settings_right,
             size_hint=(0.5, 0.07)
         ))
+        self.add_widget(self.lbl)
     def developer_vk(self,button):
         webbrowser.open_new("https://vk.com/daniil.maskin")
     def developer_tel(self,button):

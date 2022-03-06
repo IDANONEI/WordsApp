@@ -1,18 +1,9 @@
-from kivy.app import App
-from kivy.core.window import Window
+
 from kivy.metrics import dp
-from kivy.uix.button import Button
-from kivy.uix.label import Label
-from kivy.uix.screenmanager import ScreenManager, Screen
-from kivy.uix.boxlayout import BoxLayout
-from kivy.uix.anchorlayout import AnchorLayout
-from kivy.uix.textinput import TextInput
 from kivy.uix.popup import Popup
 from kivy.uix.floatlayout import FloatLayout
-
 from kivy.uix.screenmanager import Screen
-from kivymd.app import MDApp
-from kivymd.uix.button import MDRectangleFlatButton, MDRoundFlatButton, MDRaisedButton, MDFillRoundFlatButton
+from kivymd.uix.button import MDFillRoundFlatButton
 from kivymd.uix.label import MDLabel
 from kivymd.uix.textfield import MDTextFieldRound
 
@@ -24,7 +15,6 @@ def change_current_info(info):
         f.write(str(info[1]) + "\n")
         f.write(str(info[2]) + "\n")
         f.write(str(info[3]) + "\n")
-
 
 class SingUpScreen(Screen):
     def __init__(self, manager, **kwargs):
@@ -38,18 +28,20 @@ class SingUpScreen(Screen):
             halign="center",
             pos_hint={'center_x': 0.5, 'center_y': 0.85},
             theme_text_color="Custom",
-            text_color=(147 / 255, 7 / 255, 200 / 255)
+            text_color=(100 / 255, 0 / 255, 100 / 255)
         )
+        self.lbl.font_size = 65
 
         self.lbl2 = MDLabel(
-            text="Вход",
+            text="ВХОД",
             font_style="H6",
             halign="center",
             font_size=25,
-            pos_hint={'center_x': 0.5, 'center_y': 0.78},
+            pos_hint={'center_x': 0.5, 'center_y': 0.75},
             theme_text_color="Custom",
-            text_color=(147 / 255, 7 / 255, 200 / 255)
+            text_color=(100 / 255, 0 / 255, 100 / 255)
         )
+        self.lbl2.font_size=30
 
         self.textinputlogin = MDTextFieldRound(
             hint_text="Логин или почта",
@@ -164,9 +156,10 @@ class PopWindow(FloatLayout):
             halign="center",
             pos_hint={"x": 0.2, "y": 0.7},
             theme_text_color="Custom",
-            text_color=(147 / 255, 7 / 255, 200 / 255),
+            text_color=(100 / 255, 0 / 255, 100 / 255),
             size_hint=[0.6, 0.2]
         )
+        self.lbl.font_size=15
 
         self.btn = MDFillRoundFlatButton(
             text=btn_text,
@@ -188,12 +181,13 @@ class ForgotPasswordScreen(Screen):
 
         self.forgot_lbl = MDLabel(
             text="Забыли пароль?",
-            font_style="H3",
+            font_style="H6",
             halign="center",
             pos_hint={'center_x': 0.5, 'center_y': 0.75},
             theme_text_color="Custom",
-            text_color=(147 / 255, 7 / 255, 200 / 255)
+            text_color=(100 / 255, 0 / 255, 100 / 255)
         )
+        self.forgot_lbl.font_size=45
 
         self.lbl1 = MDLabel(
             text="Пожалуйста, введите адрес электронной почты.Вы получите код для изменения пароля.",
@@ -259,12 +253,14 @@ class RegistrationScreen(Screen):
 
         self.lbl = MDLabel(
             text="Регистрация",
-            font_style="H3",
+            font_style="H6",
             halign="center",
             pos_hint={'center_x': 0.5, 'center_y': 0.85},
             theme_text_color="Custom",
-            text_color=(147 / 255, 7 / 255, 200 / 255)
+            text_color=(100 / 255, 0 / 255, 100 / 255)
         )
+
+        self.lbl.font_size=45
 
         self.textinputlogin = MDTextFieldRound(
             hint_text="Введите логин",

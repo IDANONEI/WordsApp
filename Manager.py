@@ -1,23 +1,6 @@
-from kivy.app import App
-from kivy.core.window import Window
-from kivy.metrics import dp
-from kivy.uix.button import Button
-from kivy.uix.label import Label
-from kivy.uix.screenmanager import ScreenManager, Screen
-from kivy.uix.boxlayout import BoxLayout
-from kivy.uix.anchorlayout import AnchorLayout
-from kivy.uix.textinput import TextInput
-from kivy.uix.popup import Popup
-from kivy.uix.floatlayout import FloatLayout
 
-from kivy.uix.screenmanager import Screen
-from kivymd.app import MDApp
-from kivymd.uix.button import MDRectangleFlatButton, MDRoundFlatButton, MDRaisedButton, MDFillRoundFlatButton
-from kivymd.uix.label import MDLabel
-from kivymd.uix.textfield import MDTextFieldRound
+from kivy.uix.screenmanager import ScreenManager
 
-from kivy.core.window import Window
-import time
 from Regisration import *
 from Account import *
 
@@ -215,7 +198,7 @@ class ManagerApp(MDApp):
         super().__init__(**kwargs)
         self.db = db
         self.is_authorized = is_authorized
-        self.theme_cls.theme_style = "Dark"
+        # self.theme_cls.theme_style = "Dark"
 
     def build(self):
         reg_man = AppManager(self.db, self.is_authorized)
