@@ -93,20 +93,21 @@ class TrainingScreen(Screen):
 
         self.lbl = MDLabel(
             text="Тренировка",
-            font_style="H3",
+            font_style="H5",
             halign="center",
             pos_hint={'center_x': 0.5, 'center_y': 0.85},
             theme_text_color="Custom",
-            text_color=(147 / 255, 7 / 255, 200 / 255)
+            text_color=(100 / 255, 0, 100 / 255)
         )
+        self.lbl.font_size = 50
 
 
 
         self.practice_btn = MDFillRoundFlatButton(
             text='Практика',
             text_color=(1, 1, 1, 1),
-            md_bg_color=(120 / 255, 0, 120 / 255),
-            pos_hint={'center_x': 0.5, 'center_y': 0.6},
+            md_bg_color=(100 / 255, 0, 100 / 255),
+            pos_hint={'center_x': 0.5, 'center_y': 0.7},
             on_press=manager.switch_to_practice,
             size_hint=(0.5, 0.07)
         )
@@ -114,8 +115,8 @@ class TrainingScreen(Screen):
         self.test_btn = MDFillRoundFlatButton(
             text='Тест',
             text_color=(1, 1, 1, 1),
-            md_bg_color=(120 / 255, 0, 120 / 255),
-            pos_hint={'center_x': 0.5, 'center_y': 0.5},
+            md_bg_color=(100 / 255, 0, 100 / 255),
+            pos_hint={'center_x': 0.5, 'center_y': 0.6},
             on_press=manager.switch_to_test,
             size_hint=(0.5, 0.07)
         )
@@ -123,7 +124,7 @@ class TrainingScreen(Screen):
         self.move_back_btn = MDFillRoundFlatButton(
             text='Назад',
             text_color=(1, 1, 1, 1),
-            md_bg_color=(120 / 255, 0, 120 / 255),
+            md_bg_color=(100 / 255, 0, 100 / 255),
             pos_hint={'center_x': 0.5, 'center_y': 0.2},
             on_press=manager.switch_to_home_right,
             size_hint=(0.5, 0.07)
@@ -141,18 +142,18 @@ class About_AppScreen(Screen):
 
         self.lbl=MDLabel(
             text="О приложении:",
-            font_style="H3",
+            font_style="H5",
             halign="center",
             pos_hint={'center_x': 0.5, 'center_y': 0.85},
             theme_text_color="Custom",
-            text_color=(147 / 255, 7 / 255, 200 / 255)
+            text_color=(100 / 255, 0, 100 / 255)
         )
 
-        self.lbl.font_size = 65
+        self.lbl.font_size = 50
 
         self.add_widget(MDFillRoundFlatButton(
             text="Разработчик: Маскин Даниил",
-            md_bg_color=(120 / 255, 0, 120 / 255),
+            md_bg_color=(100 / 255, 0, 100 / 255),
             text_color=(1, 1, 1, 1),
             size_hint=(0.5, 0.07),
             on_press=self.developer_vk,
@@ -160,7 +161,7 @@ class About_AppScreen(Screen):
 
         self.add_widget(MDFillRoundFlatButton(
             text="Написать о баге",
-            md_bg_color=(120 / 255, 0, 120 / 255),
+            md_bg_color=(100 / 255, 0, 100 / 255),
             text_color=(1, 1, 1, 1),
             size_hint=(0.5, 0.07),
             on_press=self.developer_tel,
@@ -168,14 +169,14 @@ class About_AppScreen(Screen):
 
         self.add_widget(MDFillRoundFlatButton(
             text="Оценить",
-            md_bg_color=(120 / 255, 0, 120 / 255),
+            md_bg_color=(100 / 255, 0, 100 / 255),
             text_color=(1, 1, 1, 1),
             size_hint=(0.5, 0.07),
             # on_press=self.developer_app,
             pos_hint={'center_x': 0.5, 'center_y': 0.4}, ))
         self.add_widget(MDFillRoundFlatButton(
             text="Как работает",
-            md_bg_color=(120 / 255, 0, 120 / 255),
+            md_bg_color=(100 / 255, 0, 100 / 255),
             text_color=(1, 1, 1, 1),
             size_hint=(0.5, 0.07),
             on_press=manager.swich_works_wordWindow,
@@ -184,7 +185,7 @@ class About_AppScreen(Screen):
         self.add_widget(MDFillRoundFlatButton(
             text='Назад',
             text_color=(1, 1, 1, 1),
-            md_bg_color=(120 / 255, 0, 120 / 255),
+            md_bg_color=(100 / 255, 0, 100 / 255),
             pos_hint={'center_x': 0.5, 'center_y': 0.2},
             on_press=manager.switch_to_settings_right,
             size_hint=(0.5, 0.07)
@@ -208,7 +209,7 @@ class Works_wordScrean(Screen):
         self.add_widget(MDFillRoundFlatButton(
             text='Назад',
             text_color=(1, 1, 1, 1),
-            md_bg_color=(120 / 255, 0, 120 / 255),
+            md_bg_color=(100 / 255, 0, 100 / 255),
             pos_hint={'center_x': 0.5, 'center_y': 0.2},
             on_press=manager.switch_about_app_rigth,
             size_hint=(0.5, 0.07)
@@ -223,17 +224,20 @@ class Settings_AppScreen(Screen):
 
         self.lbl = MDLabel(
             text="Настройки",
-            font_style="H3",
+            font_style="H5",
             halign="center",
             pos_hint={'center_x': 0.5, 'center_y': 0.85},
             theme_text_color="Custom",
-            text_color=(147 / 255, 7 / 255, 200 / 255)
+            text_color=(100 / 255, 0, 100 / 255)
         )
+
+        self.lbl.font_size = 50
+
 
 
         self.list_letter_button = MDFillRoundFlatButton(
             text="Выйти из аккаунта",
-            md_bg_color=(120 / 255, 0, 120 / 255),
+            md_bg_color=(100 / 255, 0, 100 / 255),
             text_color=(1, 1, 1, 1),
             size_hint=(0.5, 0.07),
             on_press=self.leave_a,
@@ -242,7 +246,7 @@ class Settings_AppScreen(Screen):
 
         self.add_widget(MDFillRoundFlatButton(
             text="Изменить данные",
-            md_bg_color=(120 / 255, 0, 120 / 255),
+            md_bg_color=(100 / 255, 0, 100 / 255),
             text_color=(1, 1, 1, 1),
             size_hint=(0.5, 0.07),
             on_press=self.man.switch_change_information,
@@ -251,7 +255,7 @@ class Settings_AppScreen(Screen):
         self.about_app = MDFillRoundFlatButton(
             text='О приложении',
             text_color=(1, 1, 1, 1),
-            md_bg_color=(120 / 255, 0, 120 / 255),
+            md_bg_color=(100 / 255, 0, 100 / 255),
             pos_hint={'center_x': 0.5, 'center_y': 0.5},
             on_press=self.man.switch_about_app,
             size_hint=(0.5, 0.07)
@@ -259,7 +263,7 @@ class Settings_AppScreen(Screen):
 
         self.back = MDFillRoundFlatButton(
             text="Назад",
-            md_bg_color=(120 / 255, 0, 120 / 255),
+            md_bg_color=(100 / 255, 0, 100 / 255),
             text_color=(1, 1, 1, 1),
             size_hint=(0.5, 0.07),
             pos_hint={'center_x': 0.5, 'center_y': 0.2},
@@ -282,17 +286,21 @@ class Change_information(Screen):
         super().__init__(**kwargs)
         self.man = manager
 
-        self.add_widget(MDLabel(
+        self.lbl=MDLabel(
             text="Изменить данные",
-            font_style="H3",
+            font_style="H5",
             halign="center",
             pos_hint={'center_x': 0.5, 'center_y': 0.85},
             theme_text_color="Custom",
-            text_color=(147 / 255, 7 / 255, 200 / 255)
-        ))
+            text_color=(100 / 255, 0, 100 / 255)
+        )
+
+        self.lbl.font_size = 50
+        self.add_widget(self.lbl)
+
         self.add_widget(MDFillRoundFlatButton(
             text="Изменить логин",
-            md_bg_color=(120 / 255, 0, 120 / 255),
+            md_bg_color=(100 / 255, 0, 100 / 255),
             text_color=(1, 1, 1, 1),
             size_hint=(0.5, 0.07),
             on_press=self.man.switch_change_name,
@@ -300,7 +308,7 @@ class Change_information(Screen):
         self.add_widget(MDFillRoundFlatButton(
             text="Изменить пароль",
             text_color=(1, 1, 1, 1),
-            md_bg_color=(120 / 255, 0, 120 / 255),
+            md_bg_color=(100 / 255, 0, 100 / 255),
             size_hint=(0.5, 0.07),
             pos_hint={'center_x': 0.5, 'center_y': 0.7},
             on_press=manager.switch_change_password,
@@ -309,7 +317,7 @@ class Change_information(Screen):
         self.add_widget(MDFillRoundFlatButton(
             text="Изменить почту",
             text_color=(1, 1, 1, 1),
-            md_bg_color=(120 / 255, 0, 120 / 255),
+            md_bg_color=(100 / 255, 0, 100 / 255),
             size_hint=(0.5, 0.07),
             pos_hint={'center_x': 0.5, 'center_y': 0.6},
             on_press=manager.switch_change_mail,
@@ -317,11 +325,12 @@ class Change_information(Screen):
         self.add_widget(MDFillRoundFlatButton(
             text='Назад',
             text_color=(1, 1, 1, 1),
-            md_bg_color=(120 / 255, 0, 120 / 255),
+            md_bg_color=(100 / 255, 0, 100 / 255),
             pos_hint={'center_x': 0.5, 'center_y': 0.2},
             on_press=manager.switch_to_settings_right,
             size_hint=(0.5, 0.07)
         ))
+
 class Change_NameScreen(Screen):
     def __init__(self, manager, **kwargs):
         super().__init__(**kwargs)
@@ -329,19 +338,21 @@ class Change_NameScreen(Screen):
 
         self.lbl = MDLabel(
             text="Изменение логина",
-            font_style="H3",
+            font_style="H5",
             halign="center",
             pos_hint={'center_x': 0.5, 'center_y': 0.85},
             theme_text_color="Custom",
-            text_color=(147 / 255, 7 / 255, 200 / 255)
+            text_color=(100 / 255, 0, 100 / 255)
         )
+
+        self.lbl.font_size = 50
 
         self.textinputname= MDTextFieldRound(
             hint_text="Новый логин",
             icon_left="key-variant",
             color_active=(1, 1, 1, 1),
             pos_hint={'center_x': 0.5, 'center_y': 0.7},
-            normal_color=(120 / 255, 0, 120 / 255),
+            normal_color=(100 / 255, 0, 100 / 255),
             line_color=(1, 0, 1, 1),
             size_hint=(0.45, 0.07),
         )
@@ -352,7 +363,7 @@ class Change_NameScreen(Screen):
             icon_left="key-variant",
             color_active=(1, 1, 1, 1),
             pos_hint={'center_x': 0.5, 'center_y': 0.6},
-            normal_color=(120 / 255, 0, 120 / 255),
+            normal_color=(100 / 255, 0, 100 / 255),
             line_color=(1, 0, 1, 1),
             size_hint=(0.45, 0.07),
         )
@@ -361,14 +372,14 @@ class Change_NameScreen(Screen):
         self.change_btn = MDFillRoundFlatButton(
             text='Изменить',
             text_color=(1, 1, 1, 1),
-            md_bg_color=(120 / 255, 0, 120 / 255),
+            md_bg_color=(100 / 255, 0, 100 / 255),
             pos_hint={'center_x': 0.5, 'center_y': 0.5},
             on_press=self.password_check,
             size_hint=(0.5, 0.07)
         )
         self.back = MDFillRoundFlatButton(
             text="Назад",
-            md_bg_color=(120 / 255, 0, 120 / 255),
+            md_bg_color=(100 / 255, 0, 100 / 255),
             text_color=(1, 1, 1, 1),
             size_hint=(0.5, 0.07),
             pos_hint={'center_x': 0.5, 'center_y': 0.2},
@@ -414,19 +425,20 @@ class Change_passwordScreen(Screen):
 
         self.lbl = MDLabel(
             text="Изменение пароля",
-            font_style="H3",
+            font_style="H5",
             halign="center",
             pos_hint={'center_x': 0.5, 'center_y': 0.85},
             theme_text_color="Custom",
-            text_color=(147 / 255, 7 / 255, 200 / 255)
+            text_color=(100 / 255, 0, 100 / 255)
         )
+        self.lbl.font_size = 50
 
         self.textinputpasswordold = MDTextFieldRound(
             hint_text="Старый пароль",
             icon_left="key-variant",
             color_active=(1, 1, 1, 1),
             pos_hint={'center_x': 0.5, 'center_y': 0.7},
-            normal_color=(120 / 255, 0, 120 / 255),
+            normal_color=(100 / 255, 0, 100 / 255),
             line_color=(1, 0, 1, 1),
             size_hint=(0.45, 0.07),
         )
@@ -437,7 +449,7 @@ class Change_passwordScreen(Screen):
             icon_left="key-variant",
             color_active=(1, 1, 1, 1),
             pos_hint={'center_x': 0.5, 'center_y': 0.6},
-            normal_color=(120 / 255, 0, 120 / 255),
+            normal_color=(100 / 255, 0, 100 / 255),
             line_color=(1, 0, 1, 1),
             size_hint=(0.45, 0.07),
         )
@@ -446,14 +458,14 @@ class Change_passwordScreen(Screen):
         self.change_btn = MDFillRoundFlatButton(
             text='Изменить',
             text_color=(1, 1, 1, 1),
-            md_bg_color=(120 / 255, 0, 120 / 255),
+            md_bg_color=(100 / 255, 0, 100 / 255),
             pos_hint={'center_x': 0.5, 'center_y': 0.5},
             on_press=self.password_check,
             size_hint=(0.5, 0.07)
         )
         self.back = MDFillRoundFlatButton(
             text="Назад",
-            md_bg_color=(120 / 255, 0, 120 / 255),
+            md_bg_color=(100 / 255, 0, 100 / 255),
             text_color=(1, 1, 1, 1),
             size_hint=(0.5, 0.07),
             pos_hint={'center_x': 0.5, 'center_y': 0.2},
@@ -490,19 +502,20 @@ class Change_mailScreen(Screen):
 
         self.lbl = MDLabel(
             text="Изменение почты",
-            font_style="H3",
+            font_style="H5",
             halign="center",
             pos_hint={'center_x': 0.5, 'center_y': 0.85},
             theme_text_color="Custom",
-            text_color=(147 / 255, 7 / 255, 200 / 255)
+            text_color=(100 / 255, 0, 100 / 255)
         )
+        self.lbl.font_size = 50
 
         self.textinputmail = MDTextFieldRound(
             hint_text="Другая почта",
             icon_left="key-variant",
             color_active=(1, 1, 1, 1),
             pos_hint={'center_x': 0.5, 'center_y': 0.7},
-            normal_color=(120 / 255, 0, 120 / 255),
+            normal_color=(100 / 255, 0, 100 / 255),
             line_color=(1, 0, 1, 1),
             size_hint=(0.45, 0.07),
         )
@@ -513,7 +526,7 @@ class Change_mailScreen(Screen):
             icon_left="key-variant",
             color_active=(1, 1, 1, 1),
             pos_hint={'center_x': 0.5, 'center_y': 0.6},
-            normal_color=(120 / 255, 0, 120 / 255),
+            normal_color=(100 / 255, 0, 100 / 255),
             line_color=(1, 0, 1, 1),
             size_hint=(0.45, 0.07),
         )
@@ -522,14 +535,14 @@ class Change_mailScreen(Screen):
         self.change_btn = MDFillRoundFlatButton(
             text='Изменить',
             text_color=(1, 1, 1, 1),
-            md_bg_color=(120 / 255, 0, 120 / 255),
+            md_bg_color=(100 / 255, 0, 100 / 255),
             pos_hint={'center_x': 0.5, 'center_y': 0.5},
             on_press=self.password_check,
             size_hint=(0.5, 0.07)
         )
         self.back = MDFillRoundFlatButton(
             text="Назад",
-            md_bg_color=(120 / 255, 0, 120 / 255),
+            md_bg_color=(100 / 255, 0, 100 / 255),
             text_color=(1, 1, 1, 1),
             size_hint=(0.5, 0.07),
             pos_hint={'center_x': 0.5, 'center_y': 0.2},
@@ -563,18 +576,19 @@ class StatisticScreen(Screen):
         super().__init__(**kwargs)
         self.man=manager
 
-        self.add_widget( MDLabel(
+        self.lbl= MDLabel(
             text="Cтатистика слов",
-            font_style="H3",
+            font_style="H5",
             halign="center",
             pos_hint={'center_x': 0.5, 'center_y': 0.85},
             theme_text_color="Custom",
-            text_color=(147 / 255, 7 / 255, 200 / 255)
-        ))
+            text_color=(100 / 255, 0 / 255, 100 / 255)
+        )
+        self.lbl.font_size = 50
 
         self.add_widget(MDFillRoundFlatButton(
             text="Хорошо усвоенные",
-            md_bg_color=(120 / 255, 0, 120 / 255),
+            md_bg_color=(100 / 255, 0, 100 / 255),
             text_color=(1, 1, 1, 1),
             size_hint=(0.5, 0.07),
             pos_hint={'center_x': 0.5, 'center_y': 0.7},
@@ -583,7 +597,7 @@ class StatisticScreen(Screen):
 
         self.add_widget(MDFillRoundFlatButton(
             text="Средне усвоенные",
-            md_bg_color=(120 / 255, 0, 120 / 255),
+            md_bg_color=(100 / 255, 0, 100 / 255),
             text_color=(1, 1, 1, 1),
             size_hint=(0.5, 0.07),
             pos_hint={'center_x': 0.5, 'center_y': 0.6},
@@ -592,7 +606,7 @@ class StatisticScreen(Screen):
 
         self.add_widget(MDFillRoundFlatButton(
             text="Не усвоенные",
-            md_bg_color=(120 / 255, 0, 120 / 255),
+            md_bg_color=(100 / 255, 0, 100 / 255),
             text_color=(1, 1, 1, 1),
             size_hint=(0.5, 0.07),
             pos_hint={'center_x': 0.5, 'center_y': 0.5},
@@ -601,30 +615,34 @@ class StatisticScreen(Screen):
 
         self.add_widget(MDFillRoundFlatButton(
             text="Назад",
-            md_bg_color=(120 / 255, 0, 120 / 255),
+            md_bg_color=(100 / 255, 0, 100 / 255),
             text_color=(1, 1, 1, 1),
             size_hint=(0.5, 0.07),
             pos_hint={'center_x': 0.5, 'center_y': 0.1},
             on_press=self.man.switch_to_home_right,
         ))
 
+        self.add_widget(self.lbl)
+
 class StatisticWordsScreen(Screen):
     def __init__(self,manager,group_name, **kwargs):
         super().__init__(**kwargs)
         self.man=manager
-        self.add_widget(MDLabel(
+        self.lbl=MDLabel(
             text="Слова:",
-            font_style="H3",
+            font_style="H5",
             halign="center",
             pos_hint={'center_x': 0.5, 'center_y': 0.9},
             theme_text_color="Custom",
-            text_color=(147 / 255, 7 / 255, 200 / 255)
-        ))
+            text_color=(100 / 255, 0, 100 / 255)
+        )
+        self.lbl.font_size = 50
+        self.add_widget(self.lbl)
 
         sv = ScrollView(
             size_hint = (0.7,0.7),
             pos_hint = {'center_x':0.5, 'center_y':0.5},
-            bar_color=(147 / 255, 7 / 255, 200 / 255)
+            bar_color=(100 / 255, 0, 100 / 255)
         )
 
         ml = MDList()
@@ -633,23 +651,23 @@ class StatisticWordsScreen(Screen):
         self.man.divide_into_groups()
         for word_ind in self.man.word_groups[group_name]:
             ml.add_widget(ThreeLineListItem(
-                text = self.words[word_ind][0].upper() + self.words[word_ind][1:],
+                text = self.words[word_ind],
                 font_style = "H6",
                 theme_text_color = 'Custom',
-                text_color = (147 / 255, 7 / 255, 200 / 255),
+                text_color = (100 / 255, 0, 100 / 255),
                 secondary_text = f"Количество правильных ответов: {self.man.answers_list['correct'][word_ind]}",
                 secondary_theme_text_color = 'Custom',
-                secondary_text_color=(120 / 255, 0, 120 / 255),
+                secondary_text_color=(100 / 255, 0, 100 / 255),
                 secondary_font_style ='Body2',
                 tertiary_text = f"Количество не правильных ответов: {self.man.answers_list['wrong'][word_ind]}",
                 tertiary_theme_text_color = 'Custom',
-                tertiary_text_color = (120 / 255, 0, 120 / 255),
+                tertiary_text_color = (100 / 255, 0, 100 / 255),
                 tertiary_font_style ='Body2'
             ))
 
         self.add_widget(MDFillRoundFlatButton(
             text="Назад",
-            md_bg_color=(120 / 255, 0, 120 / 255),
+            md_bg_color=(100 / 255, 0, 100 / 255),
             text_color=(1, 1, 1, 1),
             size_hint=(0.5, 0.07),
             pos_hint={'center_x': 0.5, 'center_y': 0.1},
@@ -662,7 +680,7 @@ class StatisticWordsScreen(Screen):
 
     def list_words(self):
         with open("words.txt", "r", encoding='utf-8') as f:
-            words=[word.strip().lower() for word in f.readlines()]
+            words=[word.strip() for word in f.readlines()]
         return words
 
 
@@ -689,7 +707,7 @@ class RatingScreen(Screen):
 
         self.add_widget(MDFillRoundFlatButton(
             text="Назад",
-            md_bg_color=(120 / 255, 0, 120 / 255),
+            md_bg_color=(100 / 255, 0, 100 / 255),
             text_color=(1, 1, 1, 1),
             size_hint=(0.5, 0.07),
             pos_hint={'center_x': 0.5, 'center_y': 0.1},
@@ -718,7 +736,7 @@ class RatingScreen(Screen):
                   f"[color=#C042B8][size=20]{cur_user[2]}[/size][/color]",
               ) ]+temp.copy()
         finish = time.time()
-        print(finish-start)
+        # print(finish-start)
 
 class PracticeScreen(Screen):
     def __init__(self, manager, **kwargs):
@@ -732,7 +750,7 @@ class PracticeScreen(Screen):
             halign="center",
             pos_hint={"center_x": 0.2, 'center_y': 0.9},
             theme_text_color="Custom",
-            text_color=(147 / 255, 7 / 255, 200 / 255)
+            text_color=(100 / 255, 0, 100 / 255)
         )
 
         self.count_wrong_words_label = MDLabel(
@@ -741,7 +759,7 @@ class PracticeScreen(Screen):
             halign="center",
             pos_hint={"center_x": 0.2, 'center_y': 0.8},
             theme_text_color="Custom",
-            text_color=(147 / 255, 7 / 255, 200 / 255)
+            text_color=(100 / 255, 0, 100 / 255)
         )
 
         self.add_widget(self.count_wrong_words_label)
@@ -765,7 +783,7 @@ class PracticeScreen(Screen):
 
         self.add_widget(MDFillRoundFlatButton(
             text="Завершить",
-            md_bg_color=(120 / 255, 0, 120 / 255),
+            md_bg_color=(100 / 255, 0, 100 / 255),
             text_color=(1, 1, 1, 1),
             size_hint=(0.5, 0.07),
             pos_hint={'center_x': 0.5, 'center_y': 0.2},
@@ -822,8 +840,8 @@ class PracticeScreen(Screen):
                                                          font_size=30,
                                                          size_hint=(None, None),
                                                          size=(10, 10),
-                                                         md_bg_color=(120 / 255, 0, 120 / 255),
-                                                         md_bg_color_disabled=(120 / 255, 0, 120 / 255))
+                                                         md_bg_color=(100 / 255, 0, 100 / 255),
+                                                         md_bg_color_disabled=(100 / 255, 0, 100 / 255))
                                    for letter in self.word]
 
         for i in range(len(self.list_letter_button)):
@@ -908,13 +926,13 @@ class TestScreen(Screen):
             halign="center",
             pos_hint={'center_x': 0.5, 'center_y': 0.82},
             theme_text_color="Custom",
-            text_color=(147 / 255, 7 / 255, 200 / 255),
+            text_color=(100 / 255, 0, 100 / 255),
             size_hint=(0.8, 1)
         ))
 
         self.add_widget(MDFillRoundFlatButton(
             text="Завершить",
-            md_bg_color=(120 / 255, 0, 120 / 255),
+            md_bg_color=(100 / 255, 0, 100 / 255),
             text_color=(1, 1, 1, 1),
             size_hint=(0.3, 0.07),
             pos_hint={'center_x': 0.32, 'center_y': 0.15},
@@ -923,7 +941,7 @@ class TestScreen(Screen):
 
         self.add_widget(MDFillRoundFlatButton(
             text="Ответить",
-            md_bg_color=(120 / 255, 0, 120 / 255),
+            md_bg_color=(100 / 255, 0, 100 / 255),
             text_color=(1, 1, 1, 1),
             size_hint=(0.3, 0.07),
             pos_hint={'center_x': 0.68, 'center_y': 0.15},
@@ -962,7 +980,7 @@ class TestScreen(Screen):
                     halign="center",
                     pos_hint={'center_x': 0.53, 'center_y': i * 0.07 + 0.33},
                     theme_text_color="Custom",
-                    text_color=(147 / 255, 7 / 255, 200 / 255),
+                    text_color=(100 / 255, 0, 100 / 255),
                     size_hint=(0.4, 1)
                 )
             ] = is_wrong
@@ -980,7 +998,7 @@ class TestScreen(Screen):
                     size_hint=(4, 0.07),
                     pos_hint={'center_x': 0.32, 'center_y': i * 0.07 + 0.33}
                 )
-            self.words_check_box[list(self.words_with_answers.keys())[i]].selected_color = (147 / 255, 7 / 255, 200 / 255)
+            self.words_check_box[list(self.words_with_answers.keys())[i]].selected_color = (100 / 255, 0, 100 / 255)
             self.add_widget(list(self.words_with_answers.keys())[i])
             self.add_widget(self.words_check_box[list(self.words_with_answers.keys())[i]])
 
