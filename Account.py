@@ -173,14 +173,14 @@ class About_AppScreen(Screen):
             text_color=(1, 1, 1, 1),
             size_hint=(0.5, 0.07),
             # on_press=self.developer_app,
-            pos_hint={'center_x': 0.5, 'center_y': 0.4}, ))
-        self.add_widget(MDFillRoundFlatButton(
-            text="Как работает",
-            md_bg_color=(100 / 255, 0, 100 / 255),
-            text_color=(1, 1, 1, 1),
-            size_hint=(0.5, 0.07),
-            on_press=manager.swich_works_wordWindow,
             pos_hint={'center_x': 0.5, 'center_y': 0.5}, ))
+        # self.add_widget(MDFillRoundFlatButton(
+        #     text="Как работает",
+        #     md_bg_color=(100 / 255, 0, 100 / 255),
+        #     text_color=(1, 1, 1, 1),
+        #     size_hint=(0.5, 0.07),
+        #     on_press=manager.swich_works_wordWindow,
+        #     pos_hint={'center_x': 0.5, 'center_y': 0.5}, ))
 
         self.add_widget(MDFillRoundFlatButton(
             text='Назад',
@@ -353,7 +353,7 @@ class Change_NameScreen(Screen):
             color_active=(1, 1, 1, 1),
             pos_hint={'center_x': 0.5, 'center_y': 0.7},
             normal_color=(100 / 255, 0, 100 / 255),
-            line_color=(1, 0, 1, 1),
+            line_color=(120 / 255, 0, 120 / 255,1),
             size_hint=(0.45, 0.07),
         )
         self.textinputname.bind(focus=manager.change_icon_color)
@@ -364,7 +364,7 @@ class Change_NameScreen(Screen):
             color_active=(1, 1, 1, 1),
             pos_hint={'center_x': 0.5, 'center_y': 0.6},
             normal_color=(100 / 255, 0, 100 / 255),
-            line_color=(1, 0, 1, 1),
+            line_color=(120 / 255, 0, 120 / 255,1),
             size_hint=(0.45, 0.07),
         )
         self.textinputpassword.bind(focus=manager.change_icon_color)
@@ -439,7 +439,7 @@ class Change_passwordScreen(Screen):
             color_active=(1, 1, 1, 1),
             pos_hint={'center_x': 0.5, 'center_y': 0.7},
             normal_color=(100 / 255, 0, 100 / 255),
-            line_color=(1, 0, 1, 1),
+            line_color=(120 / 255, 0, 120 / 255,1),
             size_hint=(0.45, 0.07),
         )
         self.textinputpasswordold.bind(focus=manager.change_icon_color)
@@ -450,7 +450,7 @@ class Change_passwordScreen(Screen):
             color_active=(1, 1, 1, 1),
             pos_hint={'center_x': 0.5, 'center_y': 0.6},
             normal_color=(100 / 255, 0, 100 / 255),
-            line_color=(1, 0, 1, 1),
+            line_color=(120 / 255, 0, 120 / 255,1),
             size_hint=(0.45, 0.07),
         )
         self.textinputpassword.bind(focus=manager.change_icon_color)
@@ -516,7 +516,7 @@ class Change_mailScreen(Screen):
             color_active=(1, 1, 1, 1),
             pos_hint={'center_x': 0.5, 'center_y': 0.7},
             normal_color=(100 / 255, 0, 100 / 255),
-            line_color=(1, 0, 1, 1),
+            line_color=(120 / 255, 0, 120 / 255,1),
             size_hint=(0.45, 0.07),
         )
         self.textinputmail.bind(focus=manager.change_icon_color)
@@ -527,7 +527,7 @@ class Change_mailScreen(Screen):
             color_active=(1, 1, 1, 1),
             pos_hint={'center_x': 0.5, 'center_y': 0.6},
             normal_color=(100 / 255, 0, 100 / 255),
-            line_color=(1, 0, 1, 1),
+            line_color=(120 / 255, 0, 120 / 255,1),
             size_hint=(0.45, 0.07),
         )
         self.textinputpassword.bind(focus=manager.change_icon_color)

@@ -133,6 +133,7 @@ class AppManager(ScreenManager):
         self.switch_to(self.TestWindow, direction='left')
 
 
+
     def switch_to_settings(self, button):
         self.switch_to(self.SettingsWindow, direction='left')
 
@@ -198,7 +199,7 @@ class ManagerApp(MDApp):
         super().__init__(**kwargs)
         self.db = db
         self.is_authorized = is_authorized
-        # self.theme_cls.theme_style = "Dark"
+        #self.theme_cls.theme_style = "Dark"
 
     def build(self):
         reg_man = AppManager(self.db, self.is_authorized)

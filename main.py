@@ -1,4 +1,4 @@
-from kivy.core.window import Window
+# from kivy.core.window import Window
 from Manager import ManagerApp
 from DB import DataBase
 from kivy.config import Config

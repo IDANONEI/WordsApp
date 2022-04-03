@@ -48,8 +48,9 @@ class SingUpScreen(Screen):
             icon_left="email",
             color_active=(1, 1, 1, 1),
             pos_hint={'center_x': 0.5, 'center_y': 0.6},
-            normal_color=(120 / 255, 0, 120 / 255),
-            line_color=(1 / 255, 1 / 255, 1 / 255, 1),
+            normal_color=(120 / 255, 0, 120 / 255,1),
+
+            line_color=(120 / 255, 0, 120 / 255,1),
             size_hint=(0.45, 0.07),
         )
         self.textinputlogin.text = ""
@@ -64,7 +65,7 @@ class SingUpScreen(Screen):
             color_active=(1, 1, 1, 1),
             pos_hint={'center_x': 0.5, 'center_y': 0.50},
             normal_color=(120 / 255, 0, 120 / 255),
-            line_color=(1, 0, 1, 1),
+            line_color=(120 / 255, 0, 120 / 255,1),
             size_hint=(0.45, 0.07),
         )
 
@@ -205,7 +206,7 @@ class ForgotPasswordScreen(Screen):
             color_active=(1, 1, 1, 1),
             pos_hint={'center_x': 0.5, 'center_y': 0.45},
             normal_color=(120 / 255, 0, 120 / 255),
-            line_color=(1, 0, 1, 1),
+            line_color=(120 / 255, 0, 120 / 255,1),
             size_hint=(0.45, 0.07),
         )
 
@@ -268,7 +269,7 @@ class RegistrationScreen(Screen):
             color_active=(1, 1, 1, 1),
             pos_hint={'center_x': 0.5, 'center_y': 0.7},
             normal_color=(120 / 255, 0, 120 / 255),
-            line_color=(1, 0, 1, 1),
+            line_color=(120 / 255, 0, 120 / 255,1),
             size_hint=(0.45, 0.07),
         )
 
@@ -280,7 +281,7 @@ class RegistrationScreen(Screen):
             color_active=(1, 1, 1, 1),
             pos_hint={'center_x': 0.5, 'center_y': 0.58},
             normal_color=(120 / 255, 0, 120 / 255),
-            line_color=(1, 0, 1, 1),
+            line_color=(120 / 255, 0, 120 / 255,1),
             size_hint=(0.45, 0.07),
         )
 
@@ -292,7 +293,7 @@ class RegistrationScreen(Screen):
             color_active=(1, 1, 1, 1),
             pos_hint={'center_x': 0.5, 'center_y': 0.46},
             normal_color=(120 / 255, 0, 120 / 255),
-            line_color=(1, 0, 1, 1),
+            line_color=(120 / 255, 0, 120 / 255,1),
             size_hint=(0.45, 0.07),
         )
         self.textinputpassword.bind(focus=manager.change_icon_color)
@@ -303,7 +304,7 @@ class RegistrationScreen(Screen):
             color_active=(1, 1, 1, 1),
             pos_hint={'center_x': 0.5, 'center_y': 0.34},
             normal_color=(120 / 255, 0, 120 / 255),
-            line_color=(1, 0, 1, 1),
+            line_color=(120 / 255, 0, 120 / 255,1),
             size_hint=(0.45, 0.07),
         )
         self.textinputpasswordtoo.bind(focus=manager.change_icon_color)
