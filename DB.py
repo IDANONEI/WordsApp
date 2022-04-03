@@ -177,7 +177,7 @@ class DataBase:
         # print("Фильтруемые слова:", words)
 
         # Фраза, которую будем проверять.
-        phrase = name
+        phrase = name.lower()
 
         def distance(a, b):
             # "Calculates the Levenshtein distance between a and b."

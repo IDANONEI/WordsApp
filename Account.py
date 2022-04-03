@@ -1034,6 +1034,3 @@ class TestScreen(Screen):
             Clock.schedule_once(self.man.switch_to_training_right, 1)  # Таймер
         else:
             self.man.switch_to_training_right()
-
-
-
